@@ -1,0 +1,3565 @@
+{
+  "deviceId": 230709814,
+  "deviceSn": "SS3ES150NAT230",
+  "displayParams": [
+    {
+      "primaryId": 33339,
+      "storageName": "INV_MOD1",
+      "name": "Inverter Type",
+      "unit": null,
+      "dataType": 3,
+      "enumDataMap": {
+        "1000": "String",
+        "1001": "Single-phase Energy Storage",
+        "1002": "Micro-inversion",
+        "1003": "Three-phase Energy Storage",
+        "1004": "Single-phase Grid Connected",
+        "1005": "Single-phase",
+        "1006": "Three-phase ",
+        "1007": "Solar inverter",
+        "1008": "Single phase LV Hybrid",
+        "1009": "Microinverter",
+        "1010": "Three phase LV Hybrid",
+        "1011": "Grid-connected machine",
+        "1012": "Low-pressure energy storage",
+        "1013": "High-pressure energy storage",
+        "1014": "Reserved",
+        "1015": "Three phase HV Hybrid",
+        "1016": "S6Three phase HV Hybrid",
+        "1017": "Three-phase grid-connected",
+        "1018": "Split Phase",
+        "1019": "Cleavage Phase",
+        "1020": "MZ-IVH3700",
+        "1021": "MZ-IVH4600",
+        "1022": "MZ-IVH5000",
+        "1023": "MZ-IVH3700L",
+        "1024": "MZ-IVH4600L",
+        "1025": "MZ-IVH5000L",
+        "1026": "Knight 3600",
+        "1027": "Knight 6000"
+      }
+    },
+    {
+      "primaryId": 53223,
+      "storageName": "SS_CY1",
+      "name": "Production Compliance Country",
+      "unit": null,
+      "dataType": 3,
+      "enumDataMap": {
+        "1000": "China",
+        "1001": "Europe",
+        "1002": "Germany",
+        "1003": "Italy",
+        "1004": "Australia",
+        "1005": "Spain",
+        "1006": "Turkey",
+        "1007": "Denmark",
+        "1008": "Greece",
+        "1009": "Netherlands",
+        "1010": "Belgium",
+        "1011": "U.K.",
+        "1012": "France",
+        "1013": "Poland",
+        "1014": "South Korea",
+        "1015": "Sweden",
+        "1016": "Cyprus",
+        "1017": "India",
+        "1018": "the Philippines",
+        "1019": "new Zealand",
+        "1020": "Brazil",
+        "1021": "Slovakia",
+        "1022": "Ukraine",
+        "1023": "Norway",
+        "1024": "Mexico",
+        "1025": "Ireland",
+        "1026": "Thailand",
+        "1027": "South Africa",
+        "1028": "Dubai",
+        "1029": "Croatia",
+        "1030": "Lithuania",
+        "1031": "AU (Australia AS/NZS 4777.2 Region B)",
+        "1032": "DE (Germany VDE 0126-1-1/A1)",
+        "1033": "DE (Germany VDE-AR-N 4105:2011)",
+        "1034": "JP (Japan JETGR0002-1-2.0)",
+        "1035": "IT (Italy CEI 0-21)",
+        "1036": "SE (Sweden EIFS-2)",
+        "1037": "UK (United Kingdom G98)",
+        "1038": "UL (United States UL)",
+        "1039": "TH (Thailand PEA)",
+        "1040": "SE (Sweden SWEDEN GRID) 2007",
+        "1041": "NL (Netherlands EN50549-1 2019)",
+        "1042": "TH (Thailand MEA)",
+        "1043": "CN (China NB/T 32004)",
+        "1044": "IN (India IEC61727)",
+        "1045": "AU (Australia AS/NZS 4777.2 Region A)",
+        "1046": "NZ (Australia AS/NZS 4777.2 New Zealand)",
+        "1047": "US (Americas IEEE1547)",
+        "1048": "UA (Ukraine VDE-AR-N 4105.)",
+        "1049": "TW (Taiwan CNS 15382:2018)",
+        "1050": "DE (Germany VDE0126-1-1/08.13)",
+        "1051": "BR (Brazil ABNT NBR16149 2013)",
+        "1052": "CZ (Czech EN 50160)",
+        "1053": "UK (United Kingdom G99 Type A)",
+        "1054": "PT (Portugal EN50549-1)",
+        "1055": "ES (Spain RD1699 / RD413)",
+        "1056": "ES (Spain RD661 / PO12.2)",
+        "1057": "IT (Italy CEI 0-21 ACEA)",
+        "1058": "DE (Germany VDE-AR-N 4105:2018)",
+        "1059": "BR (Brazil IEC61727)",
+        "1060": "EU (Europe EN50549-1:2019)",
+        "1061": "BE (Belgium C10/11 LV)",
+        "1062": "PL (Poland EN50438 2013)",
+        "1063": "DE (Germany VDE4110:2018)",
+        "1064": "EU (Europe EN50549-2:2019)",
+        "1065": "IT (Italy CEI 0-16)",
+        "1066": "ZA (South Africa NRS097-2-1)",
+        "1067": "GR (Greece VDE0126_Continent)",
+        "1068": "GR (Greece VDE0126_Islands)",
+        "1069": "JO (Jordan IRR-DCC MV 2015)",
+        "1070": "ES (Spain UNE206007 / UNE206006)",
+        "1071": "AU (Australia AS/NZS 4777.2 Region C)",
+        "1072": "UK (United Kingdom G99 Type B)",
+        "1073": "JO (Jordan IRR-TIC 2015)",
+        "1074": "CZ (Czech EN50549-1)",
+        "1075": "AT (Austria TOR TypeA)",
+        "1076": "CY (Cyprus Cyprus 2019)",
+        "1077": "MX (Mexico IEEE1547 : 2014)",
+        "1078": "CL (Chile Chile BT)",
+        "1079": "FR (France UTE C15-712-1)",
+        "1080": "CH (Switzerland NA/EEA A2)",
+        "1081": "CH (Switzerland NA/EEA B2)",
+        "1082": "FR (France UTE C15-712-1 Island 50Hz)",
+        "1083": "FR (France UTE C15-712-1 Island 60Hz)",
+        "1084": "FI (Finland VJV Type A)",
+        "1085": "FI (Finland VJV Type B)",
+        "1086": "NO (Norway EN50549-1)",
+        "1087": "PL (Poland NC RFG Type A)",
+        "1088": "PL (Poland NC RFG Type B)",
+        "1089": "BE (Belgium C10/11 MV)",
+        "1090": "AT (Austria TOR Type B)",
+        "1091": "IL (Israel IS 4777)",
+        "1092": "DK1 (West Denmark Type A & B LV)",
+        "1093": "DK1 (West Denmark Type B MV)",
+        "1094": "DK2 (East Denmark Type A & B LV)",
+        "1095": "DK2 (East Denmark Type B MV)",
+        "1096": "CL (Chile Chile MT HD)",
+        "1097": "CL (Chile Chile MT LD)",
+        "1098": "SE (Spain NTs-A/UNE217002/RD647)",
+        "1099": "SE (Spain NTs-B/UNE217002/RD647)",
+        "1100": "AU (Australia AS/NZS 4777.2 Vector)",
+        "1101": "UNKNOWN",
+        "1102": "Austria",
+        "1103": "Japan",
+        "1104": "Switzerland",
+        "1105": "IEC EN61727",
+        "1106": "Europe General",
+        "1107": "Czech",
+        "1108": "60Hz wide range",
+        "1109": "50Hz lv general",
+        "1110": "Estonia",
+        "1111": "Columbia",
+        "1112": "Saudi Arabia",
+        "1113": "Latvia",
+        "1114": "Romania",
+        "1115": "CNTW (CNTW TW GRID)",
+        "1116": "CNTW (CNTW CNS 15382:2018)",
+        "1117": "IRL (Ireland EN50549-1：Ireland)",
+        "1118": "UK (Northern Ireland G99 Type A - NI)",
+        "1119": "ES (Spain NTs_A_1_1_UNE217002 RD647)",
+        "1120": "ES (Spain NTs_B_1_1_UNE217002 RD647)",
+        "1121": "KOR (Korea SPS-SGSF-025-4-1972:2022)",
+        "1122": "UK (Northern Ireland G98 Type A - NI)",
+        "1123": "UK (Northern Ireland G99 Type B - NI)",
+        "1124": "RO (Romania EN50549-1)",
+        "1125": "SRB (Serbia EN50549-1)",
+        "1126": "BG (Bulgaria EN50549-1)",
+        "1127": "BR (Brazil Ord.140 2022)",
+        "1128": "KOR (Korea KS C 8565:2021)",
+        "1129": "European Union",
+        "1130": "UK G99",
+        "1131": "UK G98",
+        "1132": "Based on 4105",
+        "1133": "Based on 50549",
+        "1134": "Be Invalid",
+        "1135": "Based on 41050",
+        "1136": "Based on 505490",
+        "1137": "FI(Finland SFS-EN 50549-1)",
+        "1138": "FI(Finland SFS-EN 50549-2)",
+        "1139": "GR(Greece RFG Type A Main)",
+        "1140": "GR(Greece RFG Type A Islands)",
+        "1141": "GR(Greece RFG Type B Main)",
+        "1142": "EE(Estonia Estonia EN50549-1)",
+        "1143": "IT(Italy CEI 0-16 TERNA)",
+        "1144": "Pakistan",
+        "1145": "Uzbekistan",
+        "1146": "Vietnam",
+        "1147": "AU",
+        "1148": "AU - W",
+        "1149": "US",
+        "1150": "Custom 50Hz",
+        "1151": "EN50549",
+        "1152": "VDE4105",
+        "1153": "Custom 60Hz",
+        "1154": "SLO",
+        "1155": "HU",
+        "1156": "JM",
+        "1157": "KW"
+      }
+    },
+    {
+      "primaryId": 47507,
+      "storageName": "SSD",
+      "name": "Safety Standard",
+      "unit": null,
+      "dataType": 3,
+      "enumDataMap": {
+        "1000": "Asia-China-National Standard",
+        "1001": "Asia-Japan-Standard 1",
+        "1002": "Asia-Korea-Standard 1",
+        "1003": "Asia-Thailand-Standard 1",
+        "1004": "Europe-Britain-G99",
+        "1005": "Europe-Germany-4110",
+        "1006": "Europe-Spain-Standard 1",
+        "1007": "America-USA",
+        "1008": "America-USA",
+        "1009": "Africa-South Africa-Standard 1",
+        "1010": "Oceania-Australia-AS4777",
+        "1011": "VDE4105",
+        "1012": "BDEW",
+        "1013": "VDE0126",
+        "1014": "VDE4105-HV",
+        "1015": "BDEW-HV",
+        "1016": "CEI-021In.",
+        "1017": "CEI-016",
+        "1018": "CEI-021Ex.",
+        "1019": "CEI-021Ar.",
+        "1020": "CEI-021In.-HV",
+        "1021": "CEI-016-HV",
+        "1022": "CEI-016-MV",
+        "1023": "Australia-A",
+        "1024": "Australia-B",
+        "1025": "Australia-C",
+        "1026": "ESP-RD1699",
+        "1027": "RD1699-HV",
+        "1028": "NTS",
+        "1029": "UNE217002+RD647",
+        "1030": "Spain island",
+        "1031": "Turkey",
+        "1032": "Denmark",
+        "1033": "DK-TR322",
+        "1034": "Western Denmark",
+        "1035": "Eastern Denmark",
+        "1036": "GR-Cont.",
+        "1037": "GR-Island",
+        "1038": "Netherland",
+        "1039": "Netherland-MV",
+        "1040": "Netherland-HV",
+        "1041": "Belgium",
+        "1042": "Belgium-HV",
+        "1043": "UK-G99",
+        "1044": "UK-G98",
+        "1045": "UK-G99-HV",
+        "1046": "China-B",
+        "1047": "Taiwan",
+        "1048": "TrinaHome",
+        "1049": "HongKong",
+        "1050": "SKYWORTH",
+        "1051": "CSISolar",
+        "1052": "CHINT",
+        "1053": "China-MV",
+        "1054": "China-HV",
+        "1055": "China-A",
+        "1056": "JOLYWOOD",
+        "1057": "France",
+        "1058": "FRArrete23",
+        "1059": "FR VDE0126-HV",
+        "1060": "France VFR 2019",
+        "1061": "Poland",
+        "1062": "Poland-MV",
+        "1063": "Poland-HV",
+        "1064": "Poland-ABCD",
+        "1065": "Tor Erzeuger",
+        "1066": "Japan-50Hz",
+        "1067": "Japan-60Hz",
+        "1068": "Switzerland-A",
+        "1069": "Switzerland-B",
+        "1070": "EU-EN50438",
+        "1071": "EU-EN50549",
+        "1072": "EU-EN50549-HV",
+        "1073": "IECEN61727",
+        "1074": "Korea",
+        "1075": "Korea-DASS",
+        "1076": "Sweden",
+        "1077": "EU General",
+        "1078": "EU General-MV",
+        "1079": "EU General-HV",
+        "1080": "Cyprus",
+        "1081": "India",
+        "1082": "India-MV",
+        "1083": "India-HV",
+        "1084": "India-CEA",
+        "1085": "PHI",
+        "1086": "PHI-MV",
+        "1087": "NewZealand",
+        "1088": "NewZealand-MV",
+        "1089": "NewZealand-HV",
+        "1090": "Brazil",
+        "1091": "Brazil-LV",
+        "1092": "Brazil-230",
+        "1093": "Brazil-254",
+        "1094": "Brazil-288",
+        "1095": "SK-VSD",
+        "1096": "SK-SSE",
+        "1097": "SK-ZSD",
+        "1098": "Czech",
+        "1099": "Czech-MV",
+        "1100": "Ukraine",
+        "1101": "Norway",
+        "1102": "Norway-LV",
+        "1103": "Mexico-LV",
+        "1104": "Wide-Range-60Hz",
+        "1105": "EN50549-1",
+        "1106": "Thai-PEA",
+        "1107": "Thai-MEA",
+        "1108": "LV-50Hz",
+        "1109": "SA",
+        "1110": "SA-HV",
+        "1111": "DEWG",
+        "1112": "DEWG-MV",
+        "1113": "Croatia",
+        "1114": "Lithuania",
+        "1115": "Estonia",
+        "1116": "Columbia",
+        "1117": "Columbia-LV",
+        "1118": "Saudi Arabia",
+        "1119": "Latvia",
+        "1120": "Romania",
+        "1121": "IEC62109-1,IEC62109-2",
+        "1122": "China",
+        "1123": "Germany",
+        "1124": "Australia",
+        "1125": "Italy",
+        "1126": "Spain",
+        "1127": "United Kingdom",
+        "1128": "Hungary",
+        "1129": "Belgium",
+        "1130": "Western Australia",
+        "1131": "Greece",
+        "1132": "France",
+        "1133": "Bangkok",
+        "1134": "Thailand",
+        "1135": "Power Station",
+        "1136": "Local",
+        "1137": "60Hz",
+        "1138": "0126",
+        "1139": "Ireland",
+        "1140": "Israel",
+        "1141": "NewZealand",
+        "1142": "Poland",
+        "1143": "Chile",
+        "1144": "S.AF",
+        "1145": "Brazil",
+        "1146": "50549"
+      }
+    },
+    {
+      "primaryId": 33338,
+      "storageName": "Pr1",
+      "name": "Rated Power",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 35802,
+      "storageName": "PCU_NUM",
+      "name": "Total Number Of BTS 5K Online",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 35803,
+      "storageName": "PCU_ID",
+      "name": "PCU_ID",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 36576,
+      "storageName": "P_F",
+      "name": "Parallel Function",
+      "unit": null,
+      "dataType": 3,
+      "enumDataMap": {
+        "1000": "Disable",
+        "1001": "Enable"
+      }
+    },
+    {
+      "primaryId": 36578,
+      "storageName": "L_P_A",
+      "name": "Local Parallel Address",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 36406,
+      "storageName": "M_SLAVE",
+      "name": "Master-Slave",
+      "unit": null,
+      "dataType": 3,
+      "enumDataMap": {
+        "1000": "Master",
+        "1001": "Slave",
+        "1002": "Single"
+      }
+    },
+    {
+      "primaryId": 39509,
+      "storageName": "S_Adds",
+      "name": "Slave Address",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40641,
+      "storageName": "AF_sh",
+      "name": "Afci_Srs_Hard",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 47615,
+      "storageName": "D_M",
+      "name": "Model",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 16678,
+      "storageName": "SYSTIM1",
+      "name": "System Time",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14873,
+      "storageName": "M_S_V",
+      "name": "DSPM Firmware Version",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14874,
+      "storageName": "V_S_V",
+      "name": "DSPS Firmware Version",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14875,
+      "storageName": "S_M_V",
+      "name": "Standard Main Version",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 34999,
+      "storageName": "PTCv1",
+      "name": "Protocol Version",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 120514,
+      "storageName": "FWv2",
+      "name": "Firmware version",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 16674,
+      "storageName": "COMM_CPU_SWv1",
+      "name": "ARM Firmware Version",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 37491,
+      "storageName": "PCU_S_V",
+      "name": "PCU Software Version",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 38196,
+      "storageName": "BDU_AM_1",
+      "name": "AddressMask_BDU1",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 38215,
+      "storageName": "BDU_AM_2",
+      "name": "AddressMask_BDU2",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 38969,
+      "storageName": "BDU_S_V",
+      "name": "BDU Software Version",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40638,
+      "storageName": "AF_VF",
+      "name": "Afci_Ver_Firmware",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40639,
+      "storageName": "AF_VS",
+      "name": "Afci_Ver_Sft",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40640,
+      "storageName": "AF_VH",
+      "name": "Afci_Ver_Hard",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40642,
+      "storageName": "AF_VC",
+      "name": "Afci_Ver_Com",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89263,
+      "storageName": "Ver_T",
+      "name": "Version Type",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12896,
+      "storageName": "DV1",
+      "name": "DC Voltage PV1",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12931,
+      "storageName": "DV2",
+      "name": "DC Voltage PV2",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12996,
+      "storageName": "DV3",
+      "name": "DC Voltage PV3",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12998,
+      "storageName": "DV4",
+      "name": "DC Voltage PV4",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12955,
+      "storageName": "DV5",
+      "name": "DC Voltage PV5",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12958,
+      "storageName": "DV6",
+      "name": "DC Voltage PV6",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12959,
+      "storageName": "DV7",
+      "name": "DC Voltage PV7",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12960,
+      "storageName": "DV8",
+      "name": "DC Voltage PV8",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12975,
+      "storageName": "DV9",
+      "name": "DC Voltage PV9",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12976,
+      "storageName": "DV10",
+      "name": "DC Voltage PV10",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12977,
+      "storageName": "DV11",
+      "name": "DC Voltage PV11",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 120775,
+      "storageName": "B_N_G_V",
+      "name": "BUS Negative Ground Voltage",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12978,
+      "storageName": "DV12",
+      "name": "DC Voltage PV12",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12979,
+      "storageName": "DV13",
+      "name": "DC Voltage PV13",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12980,
+      "storageName": "DV14",
+      "name": "DC Voltage PV14",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12981,
+      "storageName": "DV15",
+      "name": "DC Voltage PV15",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12982,
+      "storageName": "DV16",
+      "name": "DC Voltage PV16",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12897,
+      "storageName": "DC1",
+      "name": "DC Current PV1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12933,
+      "storageName": "DC2",
+      "name": "DC Current PV2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13000,
+      "storageName": "DC3",
+      "name": "DC Current PV3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13002,
+      "storageName": "DC4",
+      "name": "DC Current PV4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12957,
+      "storageName": "DC5",
+      "name": "DC Current PV5",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12961,
+      "storageName": "DC6",
+      "name": "DC Current PV6",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12962,
+      "storageName": "DC7",
+      "name": "DC Current PV7",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12963,
+      "storageName": "DC8",
+      "name": "DC Current PV8",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13003,
+      "storageName": "DC9",
+      "name": "DC Current PV9",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13004,
+      "storageName": "DC10",
+      "name": "DC Current PV10",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13005,
+      "storageName": "DC11",
+      "name": "DC Current PV11",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13006,
+      "storageName": "DC12",
+      "name": "DC Current PV12",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13007,
+      "storageName": "DC13",
+      "name": "DC Current PV13",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13008,
+      "storageName": "DC14",
+      "name": "DC Current PV14",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13009,
+      "storageName": "DC15",
+      "name": "DC Current PV15",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13010,
+      "storageName": "DC16",
+      "name": "DC Current PV16",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12935,
+      "storageName": "DP1",
+      "name": "DC Power PV1",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12937,
+      "storageName": "DP2",
+      "name": "DC Power PV2",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12951,
+      "storageName": "DP3",
+      "name": "DC Power PV3",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12953,
+      "storageName": "DP4",
+      "name": "DC Power PV4",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12970,
+      "storageName": "DP5",
+      "name": "DC Power PV5",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12971,
+      "storageName": "DP6",
+      "name": "DC Power PV6",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12973,
+      "storageName": "DP7",
+      "name": "DC Power PV7",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12974,
+      "storageName": "DP8",
+      "name": "DC Power PV8",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13027,
+      "storageName": "DP9",
+      "name": "DC Power PV9",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13028,
+      "storageName": "DP10",
+      "name": "DC Power PV10",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13029,
+      "storageName": "DP11",
+      "name": "DC Power PV11",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13030,
+      "storageName": "DP12",
+      "name": "DC Power PV12",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13031,
+      "storageName": "DP13",
+      "name": "DC Power PV13",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13032,
+      "storageName": "DP14",
+      "name": "DC Power PV14",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13033,
+      "storageName": "DP15",
+      "name": "DC Power PV15",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13034,
+      "storageName": "DP16",
+      "name": "DC Power PV16",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 28551,
+      "storageName": "PVTP",
+      "name": "PV Total Power",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 25688,
+      "storageName": "TPG",
+      "name": "Total Power Generation",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 25687,
+      "storageName": "DPi_t1",
+      "name": "Total DC Input Power",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12899,
+      "storageName": "AV1",
+      "name": "AC Voltage R/U/A",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12901,
+      "storageName": "AV2",
+      "name": "AC Voltage S/V/B",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12903,
+      "storageName": "AV3",
+      "name": "AC Voltage T/W/C",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12905,
+      "storageName": "AC1",
+      "name": "AC Current R/U/A",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12907,
+      "storageName": "AC2",
+      "name": "AC Current S/V/B",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12909,
+      "storageName": "AC3",
+      "name": "AC Current T/W/C",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12920,
+      "storageName": "A_Fo1",
+      "name": "AC Output Frequency R",
+      "unit": "Hz",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12965,
+      "storageName": "AP1",
+      "name": "AC Power R/U/A",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12967,
+      "storageName": "AP2",
+      "name": "AC Power S/V/B",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12969,
+      "storageName": "AP3",
+      "name": "AC Power T/W/C",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 25686,
+      "storageName": "T_AC_OP",
+      "name": "Total AC Output Power",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12915,
+      "storageName": "A_St1",
+      "name": "Total AC Apparent Power",
+      "unit": "VA",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 26377,
+      "storageName": "AV_LINE1",
+      "name": "AC line voltage AB",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 26378,
+      "storageName": "AV_LINE2",
+      "name": "Alternating Current Voltage-BC Line",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 26379,
+      "storageName": "AV_LINE3",
+      "name": "Alternating Current Voltage-CA Line",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12944,
+      "storageName": "Q1",
+      "name": "Reactive Power-R phase",
+      "unit": "Var",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12946,
+      "storageName": "Q2",
+      "name": "Reactive Power-S phase",
+      "unit": "Var",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14876,
+      "storageName": "Q3",
+      "name": "Reactive Power-T phase",
+      "unit": "Var",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12952,
+      "storageName": "Vog_o1",
+      "name": "Output Voltage Off-grid--R phase",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12954,
+      "storageName": "Vog_o2",
+      "name": "Output Voltage Off-grid--S phase",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12956,
+      "storageName": "Vog_o3",
+      "name": "Output Voltage Off-grid--T phase",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 57408,
+      "storageName": "P_FACT",
+      "name": "Power factor",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23427,
+      "storageName": "FC_V7",
+      "name": "FlyingCap Voltage7",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12923,
+      "storageName": "Et_ge0",
+      "name": "Cumulative Production (Active)",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12972,
+      "storageName": "Etdy_ge1",
+      "name": "Daily Production (Active)",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 57409,
+      "storageName": "Emon1",
+      "name": "Monthly Production (Active)",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 57410,
+      "storageName": "Eyr1",
+      "name": "Yearly Production (Active)",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 22261,
+      "storageName": "ACTPV",
+      "name": "ActivePower PV Ext",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23447,
+      "storageName": "AP_O_L1N",
+      "name": "ActivePower Output L1N",
+      "unit": "kW",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23452,
+      "storageName": "AP_O_L2N",
+      "name": "ActivePower Output L2N",
+      "unit": "kW",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23449,
+      "storageName": "AP_PCC_L1N",
+      "name": "ActivePower PCC L1N",
+      "unit": "kW",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23454,
+      "storageName": "AP_PCC_L2N",
+      "name": "ActivePower PCC L2N",
+      "unit": "kW",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12912,
+      "storageName": "PCC_A_Qt1",
+      "name": "Total Pcc Reactive Power",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12914,
+      "storageName": "PCC_A_St1",
+      "name": "Total Pcc Apparent Power",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12916,
+      "storageName": "PCC_AC1",
+      "name": "PCC AC Current R",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12917,
+      "storageName": "PCC_AC2",
+      "name": "PCC AC Current S",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12918,
+      "storageName": "PCC_AC3",
+      "name": "PCC AC Current T",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12919,
+      "storageName": "PCC_AP1",
+      "name": "PCC AC Power R",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12921,
+      "storageName": "PCC_AP2",
+      "name": "PCC AC Power S",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12922,
+      "storageName": "PCC_AP3",
+      "name": "PCC AC Power T",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12924,
+      "storageName": "PCC_Q1",
+      "name": "PCC Reactive Power R",
+      "unit": "Var",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12925,
+      "storageName": "PCC_Q2",
+      "name": "PCC Reactive Power S",
+      "unit": "Var",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12926,
+      "storageName": "PCC_Q3",
+      "name": "PCC Reactive Power T",
+      "unit": "Var",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12927,
+      "storageName": "PCC_PF1",
+      "name": "PCC Power Factor R",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12928,
+      "storageName": "PCC_PF2",
+      "name": "PCC Power Factor S",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 12929,
+      "storageName": "PCC_PF3",
+      "name": "PCC Power Factor T",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 94724,
+      "storageName": "AP_EX",
+      "name": "ActivePower PV Ext",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13088,
+      "storageName": "Clk1",
+      "name": "Leak Current",
+      "unit": "mA",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13110,
+      "storageName": "N_Iinfo1",
+      "name": "Insulation Impedance 1",
+      "unit": "KΩ",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 17701,
+      "storageName": "ST_PG1",
+      "name": "Grid Status",
+      "unit": null,
+      "dataType": 3,
+      "enumDataMap": {
+        "1000": "Static",
+        "1001": "Grid connected",
+        "1002": "Purchasing energy",
+        "1003": "Unknown",
+        "1004": "Grid-connected electricity sales",
+        "1005": "Grid-connected power purchase",
+        "1006": "Off-grid",
+        "1007": "Sell electricity",
+        "1008": "Not connected",
+        "1009": "Normal",
+        "1010": "Fault",
+        "1011": "Waiting for grid connection",
+        "1012": "Grid connection and operation",
+        "1013": "off-grid operation"
+      }
+    },
+    {
+      "primaryId": 39213,
+      "storageName": "G_AB_L_V",
+      "name": "Grid RS/UV/AB line voltage",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 39214,
+      "storageName": "G_BC_L_V",
+      "name": "Grid ST/VW/BC line voltage",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 39215,
+      "storageName": "G_CA_L_V",
+      "name": "Grid TR/WU/CA line voltage",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13052,
+      "storageName": "PG_F1",
+      "name": "Grid Frequency",
+      "unit": "Hz",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 17541,
+      "storageName": "PG_Pt1",
+      "name": "Total Grid Power",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13053,
+      "storageName": "t_gc1",
+      "name": "Cumulative Grid Feed-in",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13054,
+      "storageName": "Et_pu1",
+      "name": "Cumulative Energy Purchased",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13055,
+      "storageName": "t_gc_tdy1",
+      "name": "Daily Grid Feed-in",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13056,
+      "storageName": "Etdy_pu1",
+      "name": "Daily Energy Purchased",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 57415,
+      "storageName": "t_gc_tdy2",
+      "name": "Monthly Grid Feed-in",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 57413,
+      "storageName": "Etdy_pu2",
+      "name": "Monthly Energy Purchased",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 57416,
+      "storageName": "t_gc_tdy3",
+      "name": "Yearly Grid Feed-in",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 57414,
+      "storageName": "Etdy_pu3",
+      "name": "Yearly Energy Purchased",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14880,
+      "storageName": "COM_VOL_GR_1",
+      "name": "Combiner Voltage-Group 1",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14881,
+      "storageName": "STR_CUR__L1_GR_1",
+      "name": "String Current- Group 1 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14882,
+      "storageName": "STR_CUR__L2_GR_1",
+      "name": "String Current- Group 1 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14883,
+      "storageName": "COM_VOL_GR_2",
+      "name": "Combiner Voltage-Group 2",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112292,
+      "storageName": "STR_C_G1_L3",
+      "name": "String Current- Group 1 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112293,
+      "storageName": "STR_C_G1_L4",
+      "name": "String Current- Group 1 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14884,
+      "storageName": "STR_CUR__L1_GR_2",
+      "name": "String Current- Group 2 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14885,
+      "storageName": "STR_CUR__L2_GR_2",
+      "name": "String Current- Group 2 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14886,
+      "storageName": "COM_VOL_GR_3",
+      "name": "Combiner Voltage-Group 3",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112294,
+      "storageName": "STR_C_G2_L3",
+      "name": "String Current- Group 2 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112295,
+      "storageName": "STR_C_G2_L4",
+      "name": "String Current- Group 2 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14887,
+      "storageName": "STR_CUR__L1_GR_3",
+      "name": "String Current- Group 3 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14888,
+      "storageName": "STR_CUR__L2_GR_3",
+      "name": "String Current- Group 3 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14889,
+      "storageName": "COM_VOL_GR_4",
+      "name": "Combiner Voltage-Group 4",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112296,
+      "storageName": "STR_C_G3_L3",
+      "name": "String Current- Group 3 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112297,
+      "storageName": "STR_C_G3_L4",
+      "name": "String Current- Group 3 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14890,
+      "storageName": "STR_CUR__L1_GR_4",
+      "name": "String Current- Group 4 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14891,
+      "storageName": "STR_CUR__L2_GR_4",
+      "name": "String Current- Group 4 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14892,
+      "storageName": "COM_VOL_GR_5",
+      "name": "Combiner Voltage-Group 5",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112298,
+      "storageName": "STR_C_G4_L3",
+      "name": "String Current- Group 4 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112299,
+      "storageName": "STR_C_G4_L4",
+      "name": "String Current- Group 4 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14893,
+      "storageName": "STR_CUR__L1_GR_5",
+      "name": "String Current- Group 5 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14894,
+      "storageName": "STR_CUR__L2_GR_5",
+      "name": "String Current- Group 5 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14895,
+      "storageName": "COM_VOL_GR_6",
+      "name": "Combiner Voltage-Group 6",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112300,
+      "storageName": "STR_C_G5_L3",
+      "name": "String Current- Group 5 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14896,
+      "storageName": "STR_CUR__L1_GR_6",
+      "name": "String Current- Group 6 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112301,
+      "storageName": "STR_C_G5_L4",
+      "name": "String Current- Group 5 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14897,
+      "storageName": "STR_CUR__L2_GR_6",
+      "name": "String Current- Group 6 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14898,
+      "storageName": "COM_VOL_GR_7",
+      "name": "Combiner Voltage-Group 7",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112302,
+      "storageName": "STR_C_G6_L3",
+      "name": "String Current- Group 6 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14899,
+      "storageName": "STR_CUR__L1_GR_7",
+      "name": "String Current- Group 7 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112303,
+      "storageName": "STR_C_G6_L4",
+      "name": "String Current- Group 6 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14900,
+      "storageName": "STR_CUR__L2_GR_7",
+      "name": "String Current- Group 7 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14901,
+      "storageName": "COM_VOL_GR_8",
+      "name": "Combiner Voltage-Group 8",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112304,
+      "storageName": "STR_C_G7_L3",
+      "name": "String Current- Group 7 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14902,
+      "storageName": "STR_CUR__L1_GR_8",
+      "name": "String Current- Group 8 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112305,
+      "storageName": "STR_C_G7_L4",
+      "name": "String Current- Group 7 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14903,
+      "storageName": "STR_CUR__L2_GR_8",
+      "name": "String Current- Group 8 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14904,
+      "storageName": "COM_VOL_GR_9",
+      "name": "Combiner Voltage-Group 9",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112306,
+      "storageName": "STR_C_G8_L3",
+      "name": "String Current- Group 8 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14905,
+      "storageName": "STR_CUR__L1_GR_9",
+      "name": "String Current- Group 9 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112307,
+      "storageName": "STR_C_G8_L4",
+      "name": "String Current- Group 8 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14906,
+      "storageName": "STR_CUR__L2_GR_9",
+      "name": "String Current- Group 9 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14907,
+      "storageName": "COM_VOL_GR_10",
+      "name": "Combiner Voltage-Group 10",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112308,
+      "storageName": "STR_C_G9_L3",
+      "name": "String Current- Group 9 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14908,
+      "storageName": "STR_CUR__L1_GR_10",
+      "name": "String Current- Group 10 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112309,
+      "storageName": "STR_C_G9_L4",
+      "name": "String Current- Group 9 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14909,
+      "storageName": "STR_CUR__L2_GR_10",
+      "name": "String Current- Group 10 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14910,
+      "storageName": "COM_VOL_GR_11",
+      "name": "Combiner Voltage-Group 11",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112310,
+      "storageName": "STR_C_G10_L3",
+      "name": "String Current- Group 10 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14911,
+      "storageName": "STR_CUR__L1_GR_11",
+      "name": "String Current- Group 11 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112311,
+      "storageName": "STR_C_G10_L4",
+      "name": "String Current- Group 10 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14912,
+      "storageName": "STR_CUR__L2_GR_11",
+      "name": "String Current- Group 11 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14913,
+      "storageName": "COM_VOL_GR_12",
+      "name": "Combiner Voltage-Group 12",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112312,
+      "storageName": "STR_C_G11_L3",
+      "name": "String Current- Group 11 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14914,
+      "storageName": "STR_CUR__L1_GR_12",
+      "name": "String Current- Group 12 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112313,
+      "storageName": "STR_C_G11_L4",
+      "name": "String Current- Group 11 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14915,
+      "storageName": "STR_CUR__L2_GR_12",
+      "name": "String Current- Group 12 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14916,
+      "storageName": "COM_VOL_GR_13",
+      "name": "Combiner Voltage-Group 13",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112314,
+      "storageName": "STR_C_G12_L3",
+      "name": "String Current- Group 12 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14917,
+      "storageName": "STR_CUR__L1_GR_13",
+      "name": "String Current- Group 13 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112315,
+      "storageName": "STR_C_G12_L4",
+      "name": "String Current- Group 12 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14918,
+      "storageName": "STR_CUR__L2_GR_13",
+      "name": "String Current- Group 13 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14919,
+      "storageName": "COM_VOL_GR_14",
+      "name": "Combiner Voltage-Group 14",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112316,
+      "storageName": "STR_C_G13_L3",
+      "name": "String Current- Group 13 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14920,
+      "storageName": "STR_CUR__L1_GR_14",
+      "name": "String Current- Group 14 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112317,
+      "storageName": "STR_C_G13_L4",
+      "name": "String Current- Group 13 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14921,
+      "storageName": "STR_CUR__L2_GR_14",
+      "name": "String Current- Group 14 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14922,
+      "storageName": "COM_VOL_GR_15",
+      "name": "Combiner Voltage-Group 15",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112318,
+      "storageName": "STR_C_G14_L3",
+      "name": "String Current- Group 14 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14923,
+      "storageName": "STR_CUR__L1_GR_15",
+      "name": "String Current- Group 15 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112319,
+      "storageName": "STR_C_G14_L4",
+      "name": "String Current- Group 14 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14924,
+      "storageName": "STR_CUR__L2_GR_15",
+      "name": "String Current- Group 15 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14925,
+      "storageName": "COM_VOL_GR_16",
+      "name": "Combiner Voltage-Group 16",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112320,
+      "storageName": "STR_C_G15_L3",
+      "name": "String Current- Group 15 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14926,
+      "storageName": "STR_CUR__L1_GR_16",
+      "name": "String Current- Group 16 Line 1",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112321,
+      "storageName": "STR_C_G15_L4",
+      "name": "String Current- Group 15 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 14927,
+      "storageName": "STR_CUR__L2_GR_16",
+      "name": "String Current- Group 16 Line 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112322,
+      "storageName": "STR_C_G16_L3",
+      "name": "String Current- Group 16 Line 3",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112323,
+      "storageName": "STR_C_G16_L4",
+      "name": "String Current- Group 16 Line 4",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 16675,
+      "storageName": "E_Cuse1",
+      "name": "Consumption Current R/U/A",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 16729,
+      "storageName": "E_Cuse2",
+      "name": "Consumption Current S/V/B ",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 16730,
+      "storageName": "E_Cuse3",
+      "name": "Consumption Current T/W/C ",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 25143,
+      "storageName": "E_Puse_t1",
+      "name": "Total Consumption Power",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 57411,
+      "storageName": "MONTH_BACKUP_LOAD_POWER",
+      "name": "BackUp Load Consumption",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 57412,
+      "storageName": "YEAR_BACKUP_LOAD_POWER",
+      "name": "Annual BackUp load power consumption",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 16677,
+      "storageName": "Et_use1",
+      "name": "Cumulative Consumption",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 16676,
+      "storageName": "Etdy_use1",
+      "name": "Daily Consumption",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 38197,
+      "storageName": "BDU_NUM",
+      "name": "BDU_Number",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 38198,
+      "storageName": "BDU_ID",
+      "name": "BDU_ID",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 38216,
+      "storageName": "BDU_INQ",
+      "name": "BDU_Inquire",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 17702,
+      "storageName": "B_ST1",
+      "name": "Battery Status",
+      "unit": null,
+      "dataType": 3,
+      "enumDataMap": {
+        "1000": "Static",
+        "1001": "Charging",
+        "1002": "Discharging",
+        "1003": "Abnormal",
+        "1004": "Battery not found",
+        "1005": "initialization",
+        "1006": "Standby",
+        "1007": "Soft start",
+        "1008": "Off-grid operation",
+        "1009": "system error",
+        "1010": "Full",
+        "1011": "Equal charge",
+        "1012": "Floating charge",
+        "1013": "Running",
+        "1014": "Stopping",
+        "1015": "unknown",
+        "1016": "Constant Current Charging",
+        "1017": "Constant Voltage Charging",
+        "1018": "Full",
+        "1019": "Forced Charging",
+        "1020": "Idle",
+        "1021": "sleep",
+        "1022": "shelve",
+        "1023": "Battery Charging Enable",
+        "1024": "Battery Discharge Enable",
+        "1025": "Request Forcible Charge",
+        "1026": "Request For All Charges",
+        "1027": "Closed State Of Soft Start Circuit Of Inverter",
+        "1028": "Cell Is Balancing",
+        "1029": "No charge and no discharge",
+        "1030": "Fault",
+        "1031": "Start-Up",
+        "1032": "Awaken",
+        "1033": "No Charging",
+        "1034": "No Discharging",
+        "1035": "Other",
+        "1036": "Normal",
+        "1037": "Fault",
+        "1038": "Shut down",
+        "1039": "Prohibition Of Charging And Discharging"
+      }
+    },
+    {
+      "primaryId": 36109,
+      "storageName": "B_P1",
+      "name": "Battery Power",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 26375,
+      "storageName": "Bcap1",
+      "name": "Battery Capacity",
+      "unit": "Ah",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23323,
+      "storageName": "B_left_cap1",
+      "name": "SoC",
+      "unit": "%",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13061,
+      "storageName": "t_cg_n1",
+      "name": "Total Charging Energy",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13062,
+      "storageName": "t_dcg_n1",
+      "name": "Total Discharging Energy",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13063,
+      "storageName": "Etdy_cg1",
+      "name": "Daily Charging Energy",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13064,
+      "storageName": "Etdy_dcg1",
+      "name": "Daily Discharging Energy",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 57417,
+      "storageName": "Emon_cg1",
+      "name": "Monthly Charging Energy",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 57419,
+      "storageName": "Emon_dcg1",
+      "name": "Monthly Discharging Energy",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 57418,
+      "storageName": "Eyr_cg1",
+      "name": "Yearly Charging Energy",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 57420,
+      "storageName": "Eyr_dcg1",
+      "name": "Yearly Discharging Energy",
+      "unit": "kWh",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 65448,
+      "storageName": "BRC",
+      "name": "Battery Rated Capacity",
+      "unit": "Ah",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89246,
+      "storageName": "P_RT_T5",
+      "name": "Pack RT Temperature5 Pack",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89247,
+      "storageName": "P_RT_T6",
+      "name": "Pack RT Temperature6 Pack",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89248,
+      "storageName": "P_RT_T7",
+      "name": "Pack RT Temperature7 Pack",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89249,
+      "storageName": "P_RT_T8",
+      "name": "Pack RT Temperature8 Pack",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23374,
+      "storageName": "P_RT_T_V",
+      "name": "Pack RT Total Voltage",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89250,
+      "storageName": "P_F_T5",
+      "name": "Pack Fault Temperature5 Pack",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89251,
+      "storageName": "P_F_T6",
+      "name": "Pack Fault Temperature6 Pack",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89252,
+      "storageName": "P_F_T7",
+      "name": "Pack Fault Temperature7 Pack",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89253,
+      "storageName": "P_F_T8",
+      "name": "Pack Fault Temperature8 Pack",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13133,
+      "storageName": "T_BAP1",
+      "name": "Temperature- Battery Pack 1",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13136,
+      "storageName": "P_BAP2",
+      "name": "Power- Battery Pack 2",
+      "unit": "W",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13137,
+      "storageName": "Vtr_BAP2",
+      "name": "Total Voltage- Battery Pack 2",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13138,
+      "storageName": "Cr_BAP2",
+      "name": "Current- Battery Pack 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13139,
+      "storageName": "SOC_BAP2",
+      "name": "SoC- Battery Pack 2",
+      "unit": "%",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 67974,
+      "storageName": "MCC_BP2",
+      "name": "Maximum Charging Current- Battery Pack 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 67975,
+      "storageName": "MDC_BP2",
+      "name": "Maximum Discharge Current- Battery Pack 2",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89245,
+      "storageName": "BMS_Ccg_max1",
+      "name": "BMS Max Charge Current",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89244,
+      "storageName": "BMS_Cdcg_max1",
+      "name": "BMS Max Discharge Current",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13074,
+      "storageName": "T_MDU1",
+      "name": "Module temperature1",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13067,
+      "storageName": "T_MDU2",
+      "name": "Module temperature 2",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13068,
+      "storageName": "T_MDU3",
+      "name": "Module temperature 3",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 94840,
+      "storageName": "T_MDU4",
+      "name": "Module temperature 4",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 94841,
+      "storageName": "T_MDU5",
+      "name": "Module temperature 5",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 94842,
+      "storageName": "T_MDU6",
+      "name": "Module temperature 6",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 22414,
+      "storageName": "SPAT",
+      "name": "Single Plate Ambient Temperature",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13072,
+      "storageName": "T_RDT2",
+      "name": "Radiator Temperature 1",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13086,
+      "storageName": "yr1",
+      "name": "Year",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13083,
+      "storageName": "mon1",
+      "name": "Month",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13085,
+      "storageName": "tdy1",
+      "name": "Day",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13087,
+      "storageName": "hou1",
+      "name": "Hour",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13082,
+      "storageName": "min1",
+      "name": "Minute",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13084,
+      "storageName": "sec1",
+      "name": "Second",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 16672,
+      "storageName": "GE_T_TODAY",
+      "name": "Generation Time Today",
+      "unit": "Min",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 16673,
+      "storageName": "GE_T_TOTAL",
+      "name": "Generation Time Total",
+      "unit": "Min",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13078,
+      "storageName": "t_w_hou1",
+      "name": "Total Running Hour",
+      "unit": "h",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 16671,
+      "storageName": "BOOT_COUNT_DOWN",
+      "name": "Boot Countdown",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13079,
+      "storageName": "Bus_V1",
+      "name": "Bus Voltage",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23420,
+      "storageName": "V_B_N_H",
+      "name": "Voltage Bus N Half",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23419,
+      "storageName": "V_B_P_H",
+      "name": "Voltage Bus P Half",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23445,
+      "storageName": "V_P_L1N",
+      "name": "Voltage Phase L1N",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23450,
+      "storageName": "V_P_L2N",
+      "name": "Voltage Phase L2N",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 46929,
+      "storageName": "ADDMask_12",
+      "name": "Address Mask 12",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 112291,
+      "storageName": "ADDMask_13",
+      "name": "Address Mask 13",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23319,
+      "storageName": "RC",
+      "name": "Realtime Capacity",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23320,
+      "storageName": "TV",
+      "name": "Total Voltage",
+      "unit": "V",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23321,
+      "storageName": "TC",
+      "name": "Total Current",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23322,
+      "storageName": "CAT",
+      "name": "Cell Average Temperature",
+      "unit": "℃",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 97591,
+      "storageName": "MOD_IDEN",
+      "name": "Model identification",
+      "unit": null,
+      "dataType": 3,
+      "enumDataMap": {
+        "1000": "Energy storage all-in-one",
+        "1001": "Grid inverter"
+      }
+    },
+    {
+      "primaryId": 89240,
+      "storageName": "SP_Fa",
+      "name": "Speed Fan",
+      "unit": "r/min",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89241,
+      "storageName": "C_H_L_C_D",
+      "name": "Current HV LLC Chg Dchg",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89242,
+      "storageName": "ESS_F_E",
+      "name": "ESS Under Frequency Exprot Start",
+      "unit": "Hz",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89243,
+      "storageName": "ESS_U_E",
+      "name": "ESS Under Frequency Import Start",
+      "unit": "Hz",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89254,
+      "storageName": "Sta_1",
+      "name": "State 1",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89255,
+      "storageName": "Sta_2",
+      "name": "State 2",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89256,
+      "storageName": "Sta_3",
+      "name": "State 3",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89257,
+      "storageName": "Sta_4",
+      "name": "State 4",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89258,
+      "storageName": "Sta_5",
+      "name": "State 5",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89259,
+      "storageName": "Sta_6",
+      "name": "State 6",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89260,
+      "storageName": "Sta_7",
+      "name": "State 7",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89261,
+      "storageName": "Sta_8",
+      "name": "State 8",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 89262,
+      "storageName": "Sta_9",
+      "name": "State 9",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 13109,
+      "storageName": "INV_ST1",
+      "name": "Inverter status",
+      "unit": null,
+      "dataType": 3,
+      "enumDataMap": {
+        "1000": "Off",
+        "1001": "Off (Abnormal)",
+        "1002": "Off (By command)",
+        "1003": "Standby",
+        "1004": "Standby (Initialization)",
+        "1005": "Standby (Impedance Test)",
+        "1006": "Standby (Light Test)",
+        "1007": "Standby (Grid Test)",
+        "1008": "Standby (No Light)",
+        "1009": "Starting",
+        "1010": "Grid connected",
+        "1011": "Grid connected (Limited power)",
+        "1012": "Grid Scheduling (cosψ-P curve)",
+        "1013": "Grid Scheduling (Q-U curve)",
+        "1014": "Checking",
+        "1015": "Test completed",
+        "1016": "Charging Test",
+        "1017": "Charging",
+        "1018": "Discharging Test",
+        "1019": "Discharging",
+        "1020": "Emergency Power Supply",
+        "1021": "Off-grid",
+        "1022": "In operation",
+        "1023": "Opening Loop Running",
+        "1024": "Soft Start",
+        "1025": "Fault",
+        "1026": "Recoverable Fault ",
+        "1027": "Permanent Fault",
+        "1028": "Connecting",
+        "1029": "Waiting",
+        "1030": "Updating Program",
+        "1031": "Grid Normal",
+        "1032": "Aging",
+        "1033": "Emergency Shutdown",
+        "1034": "Press to Turn Off",
+        "1035": "Alarm Running",
+        "1036": "Derating Running",
+        "1037": "Dispatching Running",
+        "1038": "Communication Fault",
+        "1039": "Low Insulation Impedance",
+        "1040": "Abnormal Insulation Plate ",
+        "1041": "Shutdown",
+        "1042": "Anti PID Operation",
+        "1043": "Patrol Inspection",
+        "1044": "PV Grid-tied",
+        "1045": "PV Charge",
+        "1046": "PV Grid-tied& Charge",
+        "1047": "Battery Grid-tied",
+        "1048": "PV&Battery Grid-tied",
+        "1049": "AC Charge",
+        "1050": "PV&AC Charge",
+        "1051": "Battery Off-grid",
+        "1052": "PV  Off-grid",
+        "1053": "PV&Battery Off-grid",
+        "1054": "PV Charge & Off-grid",
+        "1055": "Grid: self-reduction",
+        "1056": "Shutdown:OVGR",
+        "1057": "Shutdown: Communication Broken",
+        "1058": "Shutdown: Power Limited",
+        "1059": "Shutdown:Manually",
+        "1060": "Shutdown: DC Switch Off",
+        "1061": "AFCI Self-inspection",
+        "1062": "IV Scan",
+        "1063": "DC Input Detection",
+        "1064": "Quota Operation",
+        "1065": "GridES",
+        "1066": "Hybrid",
+        "1067": "SolarES",
+        "1068": "Setting",
+        "1069": "Hibernating",
+        "1070": "Total Operating Signal",
+        "1071": "Total Shutdown Signal",
+        "1072": "Prepp Power",
+        "1073": "PV Standby",
+        "1074": "PV & Battery Grid-tied Discharge",
+        "1075": "Grid-tied Standby",
+        "1076": "PV Working Status",
+        "1077": "Market Electricity to Battery Charging&Discharging Status",
+        "1078": "PV & Market Electricity to Battery Charging&Discharging Status",
+        "1079": "Market Electricity",
+        "1080": "Battery",
+        "1081": "Save Mode",
+        "1082": "Bypass Load",
+        "1083": "Charge Off",
+        "1084": "Energy Saving Current",
+        "1085": "CAN",
+        "1086": "Bus OK",
+        "1087": "Off-line",
+        "1088": "KM State",
+        "1089": "Synchronous CAP",
+        "1090": "Phase Lock for Internal Use",
+        "1091": "Temperature Detection",
+        "1092": "ADC Interruption",
+        "1093": "Active Feedback",
+        "1094": "Phase Locking",
+        "1095": "AC Correct",
+        "1096": "AC has input",
+        "1097": "User Shutdown",
+        "1098": "Debugging",
+        "1099": "Remote Control Operation",
+        "1100": "MPPT",
+        "1101": "Active Control Derating",
+        "1102": "Over-temperature Derating",
+        "1103": "Fan Fault Derating",
+        "1104": "Relay Fault Derating",
+        "1105": "MPPT Overvoltage Derating",
+        "1106": "Inverting",
+        "1107": "Bypass",
+        "1108": "Restarting",
+        "1109": "EPS Checking Mode",
+        "1110": "EPS Mode",
+        "1111": "Countdown Mode",
+        "1112": "Check Relay Mode",
+        "1113": "Lock Mode",
+        "1114": "Calibration Mode",
+        "1115": "Inverter In",
+        "1116": "Grid Out",
+        "1117": "Grid In",
+        "1118": "Combine charge and Bypass",
+        "1119": "PV charge and Bypass",
+        "1120": "AC charge and Bypass",
+        "1121": "PV charge and Discharge",
+        "1122": "Waitting",
+        "1123": "Flashing",
+        "1124": "Not Enabled",
+        "1125": "Connected",
+        "1126": "Status OK",
+        "1127": "Limited",
+        "1128": "Warning",
+        "1129": "Active",
+        "1130": "Hybrid Power Supply",
+        "1131": "Utility Charging",
+        "1132": "Grid Power",
+        "1133": "Failure modes",
+        "1134": "Self-Test Mode",
+        "1135": "DSP Upgrade",
+        "1136": "ARM Upgrade",
+        "1137": "Service Model",
+        "1138": "Inverter Test",
+        "1139": "PV Test",
+        "1140": "DCDC Testing",
+        "1141": "Test Pattern",
+        "1142": "Undefined",
+        "1143": "Scheduling",
+        "1144": "Limited Power Outages",
+        "1145": "Grid-Connected Generation",
+        "1146": "Scheduled Outage",
+        "1147": "Scheduling",
+        "1148": "Upgrade",
+        "1149": "Off-Grid Transition And Grid-Connected",
+        "1150": "On-Grid Transition Off-Grid",
+        "1151": "PowerOnMode",
+        "1152": "PreCheckMode",
+        "1153": "InvRunMode",
+        "1154": "FaultMode",
+        "1155": "ShutMode",
+        "1156": "BootloaderMode",
+        "1157": "Do nothing",
+        "1158": "Charging on with SCC charge on",
+        "1159": "Charging on with AC charge on",
+        "1160": "Charging on with SCC and AC charge on",
+        "1161": "battery voltage to steady while charging",
+        "1162": "Load status Load off",
+        "1163": "Load status Load on",
+        "1164": "SCC firmware version Updated",
+        "1165": "SCC firmware version unchanged",
+        "1166": "configuration status Change",
+        "1167": "configuration status unchanged",
+        "1168": "add SBU priority version yes",
+        "1169": "add SBU priority version no",
+        "1170": "Switch On",
+        "1171": "flag for charging to floating mode",
+        "1172": "Initialpoweron",
+        "1173": "Start",
+        "1174": "Grid",
+        "1175": "Off-grid",
+        "1176": "DG",
+        "1177": "Fromgridtooff-grid",
+        "1178": "FromOff-gridtogrid",
+        "1179": "Powerfailureprocessing",
+        "1180": "Shutdown",
+        "1181": "Upgrading",
+        "1182": "Openloop",
+        "1183": "Samplingcalibration",
+        "1184": "Normal",
+        "1185": "Abnormal",
+        "1186": "Stop",
+        "1187": "Work",
+        "1188": "Downtime",
+        "1189": "Overhaul",
+        "1190": "Prepare",
+        "1191": "run",
+        "1192": "Alarm",
+        "1193": "Waiting status",
+        "1194": "Normal operation status",
+        "1195": "Fault status",
+        "1196": "Self-test status",
+        "1197": "None",
+        "1198": "Pv Off-Grid",
+        "1199": "Grid Operation",
+        "1200": "Off-Grid Pv Cells",
+        "1201": "Pv Grid Connection",
+        "1202": "Pv Cells Are Connected To The Grid",
+        "1203": "System Standby",
+        "1204": "System Is Starting",
+        "1205": "System Down",
+        "1206": "SVG State",
+        "1207": "PID Status",
+        "1208": "Grid-connected normal operation",
+        "1209": "Software upgrade failed",
+        "1210": "maintenance mode",
+        "1211": "Forced charge and discharge mode",
+        "1212": "Off-grid operation",
+        "1213": "initial state",
+        "1214": "key off",
+        "1215": "Arc shutdown",
+        "1216": "open loop state",
+        "1217": "External Scheduling Mode",
+        "1218": "emergency charging mode",
+        "1219": "downtime",
+        "1220": "Manual derating operation",
+        "1221": "PID repair runs",
+        "1222": "Alarm running",
+        "1223": "upgrading",
+        "1224": "Waiting Mode",
+        "1225": "Grid-connected State",
+        "1226": "Off-grid State",
+        "1227": "Update Mode",
+        "1228": "Charging State",
+        "1229": "Discharge State",
+        "1230": "Relay pull",
+        "1231": "Pre-grid connection state",
+        "1232": "Island state",
+        "1233": "power on delay",
+        "1234": "initialization",
+        "1235": "soft start",
+        "1236": "Mains operation",
+        "1237": "Inverter operation",
+        "1238": "Inverter to Mains",
+        "1239": "Mains to inverter",
+        "1240": "Battery Activation",
+        "1241": "Manual Shutdown",
+        "1242": "Off-grid Standby",
+        "1243": "On-grid Operation",
+        "1244": "StandbyStatus",
+        "1245": "NormalStatus",
+        "1246": "FaultStatus",
+        "1247": "FlashStatus",
+        "1248": "Derating",
+        "1249": "Unit self-lowering",
+        "1250": "Limited electricity reduction",
+        "1251": "Throttled",
+        "1252": "Check Status",
+        "1253": "Permanent Fault Status",
+        "1254": "Update Status",
+        "1255": "EPS Check Status",
+        "1256": "Idle status",
+        "1257": "PV Wake-Up Battery Status",
+        "1258": "Grid-tied",
+        "1259": "DC running",
+        "1260": "PID Repair",
+        "1261": "PID Suppression",
+        "1262": "Snow Removal Mode",
+        "1263": "Relay closed",
+        "1264": "Power-On Initial",
+        "1265": "Standby Mode",
+        "1266": "Try To Connect To The Grid",
+        "1267": "Error Pattern",
+        "1268": "Off-Grid Mode",
+        "1269": "Bypass Mode",
+        "1270": "Photovoltaic Charging",
+        "1271": "Initialization State",
+        "1272": "Islanding State",
+        "1273": "Failure State",
+        "1274": "Grid Connection Mode",
+        "1275": "UPS Mode",
+        "1276": "Power-limited operation",
+        "1277": "Fault shutdown",
+        "1278": "Command shutdown",
+        "1279": "Offline state",
+        "1280": "OTA",
+        "1281": "Generator",
+        "1282": "Openloop",
+        "1283": "Default",
+        "1284": "Generator Operating Status",
+        "1285": "Charging Mode",
+        "1286": "Discharge Mode",
+        "1287": "Initial mode",
+        "1288": "Standby mode",
+        "1289": "Check mode",
+        "1290": "On grid mode",
+        "1291": "Off grid mode",
+        "1292": "Fault mode",
+        "1293": "Self-Checking",
+        "1294": "Report An Emergency"
+      }
+    },
+    {
+      "primaryId": 28549,
+      "storageName": "INV_WORK_ST1",
+      "name": "Inverter Working Status",
+      "unit": null,
+      "dataType": 3,
+      "enumDataMap": {
+        "1000": "Waiting",
+        "1001": "Discharging",
+        "1002": "Charging",
+        "1003": "Islanding",
+        "1004": "Physical Connection",
+        "1005": "Blocking",
+        "1006": "PV Connection",
+        "1007": "DSP Data Collection",
+        "1008": "Unit communication abnormal",
+        "1009": "Standby",
+        "1010": "Power Generation",
+        "1011": "Self-Derating Power Generation",
+        "1012": "Limit Power Generation",
+        "1013": "Planned Outage",
+        "1014": "Power Outage",
+        "1015": "Downtime",
+        "1016": "Fault",
+        "1017": "upgrade status",
+        "1018": "unavailable",
+        "1019": "Waiting Status",
+        "1020": "Normal Operation Status",
+        "1021": "Faulty self-test Status",
+        "1022": "Self-test Status",
+        "1023": "Running",
+        "1024": "Stopped",
+        "1025": "Key Shutdown",
+        "1026": "Emergency Stop",
+        "1027": "Initial Standby",
+        "1028": "Starting",
+        "1029": "Alarm Running",
+        "1030": "Derating Operation",
+        "1031": "Dispatch Operation",
+        "1032": "Fault Shutdown",
+        "1033": "Communication Fault"
+      }
+    },
+    {
+      "primaryId": 24542,
+      "storageName": "IPV",
+      "name": "Insulation Protection Value",
+      "unit": "kΩ",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23446,
+      "storageName": "C_O_L1N",
+      "name": "Current Output L1N",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23451,
+      "storageName": "C_O_L2N",
+      "name": "Current Output L2N",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23448,
+      "storageName": "C_PCC_L1N",
+      "name": "Current PCC L1N",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 23453,
+      "storageName": "C_PCC_L2N",
+      "name": "Current PCC L2N",
+      "unit": "A",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 94722,
+      "storageName": "V_D_RT",
+      "name": "Voltage Derate Response Time",
+      "unit": "ms",
+      "dataType": 2,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 94723,
+      "storageName": "F_D_CG",
+      "name": "Frequency Derate Config",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 96540,
+      "storageName": "M_C_NU",
+      "name": "Meter ConnectNum",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40608,
+      "storageName": "AFCI_A3",
+      "name": "AddressMask_Realtime_ArcInfo3",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40609,
+      "storageName": "Ar_M1",
+      "name": "ArcStrength_MPPT_1",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40610,
+      "storageName": "Ar_M2",
+      "name": "ArcStrength_MPPT_2",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40611,
+      "storageName": "Ar_M3",
+      "name": "ArcStrength_MPPT_3",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40612,
+      "storageName": "Ar_M4",
+      "name": "ArcStrength_MPPT_4",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40613,
+      "storageName": "Ar_M5",
+      "name": "ArcStrength_MPPT_5",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40614,
+      "storageName": "Ar_M6",
+      "name": "ArcStrength_MPPT_6",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40615,
+      "storageName": "Ar_M7",
+      "name": "ArcStrength_MPPT_7",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40616,
+      "storageName": "Ar_M8",
+      "name": "ArcStrength_MPPT_8",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40617,
+      "storageName": "Ar_M9",
+      "name": "ArcStrength_MPPT_9",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40618,
+      "storageName": "Ar_M10",
+      "name": "ArcStrength_MPPT_10",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40619,
+      "storageName": "Ar_M11",
+      "name": "ArcStrength_MPPT_11",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40620,
+      "storageName": "Ar_M12",
+      "name": "ArcStrength_MPPT_12",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40621,
+      "storageName": "Ar_H1",
+      "name": "ArcStrength_history_Channel1",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40622,
+      "storageName": "Ar_H2",
+      "name": "ArcStrength_history_Channel2",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40623,
+      "storageName": "Ar_H3",
+      "name": "ArcStrength_history_Channel3",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40624,
+      "storageName": "Ar_H4",
+      "name": "ArcStrength_history_Channel4",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40625,
+      "storageName": "Ar_H5",
+      "name": "ArcStrength_history_Channel5",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40626,
+      "storageName": "Ar_H6",
+      "name": "ArcStrength_history_Channel6",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40627,
+      "storageName": "Ar_H7",
+      "name": "ArcStrength_history_Channel7",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40628,
+      "storageName": "Ar_H8",
+      "name": "ArcStrength_history_Channel8",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40629,
+      "storageName": "Ar_H9",
+      "name": "ArcStrength_history_Channel9",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40630,
+      "storageName": "Ar_H10",
+      "name": "ArcStrength_history_Channel10",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40631,
+      "storageName": "Ar_H11",
+      "name": "ArcStrength_history_Channel11",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40632,
+      "storageName": "Ar_H12",
+      "name": "ArcStrength_history_Channel12",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40633,
+      "storageName": "AFCI_A4",
+      "name": "AddressMask_Realtime_ArcInfo4",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40634,
+      "storageName": "A_PT",
+      "name": "arc_peak_to_peak",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40635,
+      "storageName": "A_VC",
+      "name": "arc_variance",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40636,
+      "storageName": "A_HE",
+      "name": "arc_harmonic_energy",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    },
+    {
+      "primaryId": 40637,
+      "storageName": "A_AV",
+      "name": "arc_amplitude_variance",
+      "unit": null,
+      "dataType": 1,
+      "enumDataMap": null
+    }
+  ],
+  "isPage": true,
+  "endDay": "2025-07-16",
+  "endMonth": null,
+  "endYear": null,
+  "language": "en",
+  "orderDirection": "DESC",
+  "orderProperty": "collectTime",
+  "parentSn": "2720846062",
+  "parentTypeName": "Logger",
+  "reportFields": [
+    {
+      "name": "Device Name",
+      "storageName": "TYPE_NAME",
+      "unit": ""
+    },
+    {
+      "name": "SN",
+      "storageName": "DEVICE_SN",
+      "unit": ""
+    },
+    {
+      "name": "Parent Device ",
+      "storageName": "PARENT_TYPE_NAME",
+      "unit": ""
+    },
+    {
+      "name": "Device SN",
+      "storageName": "PARENT_SN",
+      "unit": ""
+    },
+    {
+      "name": "Updated Time",
+      "storageName": "COLLECTION_TIME",
+      "unit": ""
+    }
+  ],
+  "startDay": "2025-07-15",
+  "startMonth": null,
+  "startYear": null,
+  "timeDimension": 1,
+  "timeZone": "Europe/Sarajevo",
+  "typeName": "Inverter"
+}

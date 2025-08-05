@@ -1,0 +1,21 @@
+# Pliki z danymi wrażliwymi
+.env
+.env.*
+config/devices_secrets.json
+devices_secrets*
+
+# Katalogi tymczasowe
+tmp/
+temp/
+
+# Python – pliki kompilowane i cache
+__pycache__/
+*.py[cod]
+
+# Wirtualne środowisko
+venv/
+.venv/
+
+# Pliki logów
+logs/
+*.log
