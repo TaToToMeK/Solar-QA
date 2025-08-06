@@ -1,3 +1,12 @@
+-- Widok ten jestużywany do porównania instalacji w celu określenia ich wydajności w okresie ostatnich 60 dni
+-- w stosunku do sumy produkcji wszystkich instalacji
+-- podaje współczynniki coefficient do normowania mocy każdej instalacji:
+-- # sn	min_time	max_time	prod_begin	prod_end	delta_kwh	coefficient
+-- SS1ES120P4U121	2025-06-06 03:58:28	2025-08-04 20:58:49	32108.10	37419.00	5310.90	0.158126
+-- SS1ES122M5G764	2025-06-06 03:56:56	2025-08-04 20:56:50	35054.60	41095.00	6040.40	0.179846
+-- SS3ES125P38069	2025-06-06 03:59:13	2025-08-04 20:34:40	44323.40	51887.30	7563.90	0.225206
+-- SS3ES150NAT230	2025-06-06 03:50:04	2025-08-04 20:57:09	89211.90	103883.30	14671.40	0.436823
+
 CREATE OR REPLACE VIEW V_STATS_N_DAYS AS
 WITH ranked AS (
   SELECT

@@ -16,6 +16,10 @@ __pycache__/
 venv/
 .venv/
 
+# Pliki IDE
+*.swp
+.idea/
+
 # Pliki logów
 logs/
 *.log

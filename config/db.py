@@ -2,6 +2,8 @@ import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, inspect, text, exc
 from sqlalchemy.exc import OperationalError
+import logging
+logger = logging.getLogger(__name__)
 
 def connect_db():
     load_dotenv()  # Załaduj zmienne z .env

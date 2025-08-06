@@ -1,5 +1,5 @@
-name    deviceId    deviceSn    parentSn    description =============== header
-PV Bielany	230709814	SS3ES150NAT230	2720846062	opis
-PV Kożuchów	230731624	SS1ES120P4U121	2768723817	opis
-PV Kożuchów	230731855	SS1ES122M5G764	1776414813	opis
-PV Kudelczyn	229763641	SS3ES125P38069	2754356247	opis
+name	deviceId	deviceSn	parentSn	system	admin
+PV   Bielany	230709814	SS3ES150NAT230	2720846062	solarman	admin001
+PV  Kożuchów	230731624	SS1ES120P4U121	2768723817	solarman	admin001
+PV  Kożuchów	230731855	SS1ES122M5G764	1776414813	solarman	admin001
+PV Kudelczyn	229763641	SS3ES125P38069	2754356247	solarman	admin001
