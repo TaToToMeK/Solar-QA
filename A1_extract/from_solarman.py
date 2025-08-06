@@ -4,6 +4,11 @@ import requests
 import json
 import sys
 import brotli
+from config.db import connect_db
+import logging
+logger = logging.getLogger(__name__)
+
+
 
 def is_zip(content):
     # XLSX (zip) zaczyna się od PK\x03\x04
@@ -60,20 +65,22 @@ def download_solarman_report(device_id, device_sn, parent_sn, start_day, end_day
     except Exception as e:
         print("Wystąpił błąd podczas pobierania raportu:", str(e), file=sys.stderr)
 
+
 def download_all_solarman_reports(startDay, endDay):
+    # pobiera raporty z zadanego przedziału czasowego dla wszystkich urządzeń z DEVICES_LIST_FILE i.e. devices_list.txt
     with open(config.DEVICES_LIST_FILE, "r") as file:
         for i, line in enumerate(file, start=1):
-            device_param = line.strip().split("\t")
-            if len(device_param) != 5:
-                #print(f"Wiersz {i} ma niewłaściwą liczbę elementów: {device_param}")
+            device_param = line.strip().split("\t")[:6]
+            if len(device_param) != 6:
+                print(f"Wiersz {i} ma niewłaściwą liczbę elementów: {device_param}")
                 continue
-            deviceName,deviceId,deviceSn,parentSn,description = device_param
-            print(f"deviceName: {deviceName}, deviceId: {deviceId}, deviceSn: {deviceSn}, parentSn: {parentSn}, description: {description}")
+            deviceName,deviceId,deviceSn,parentSn,system,admin = device_param
+            print(f"deviceName: {deviceName}, deviceId: {deviceId}, deviceSn: {deviceSn}, parentSn: {parentSn}, system: {system}, admin: {admin}")
+            # Pobierz raport dla każdego urządzenia
             download_solarman_report(deviceId,deviceSn,parentSn,startDay,endDay)
 
-
 def pull_all_solarman():
-    # Pobieranie wszystkich raportów Solarman dla wszystkich urządzeń w 2025
+    # Pobieranie wszystkich raportów Solarman dla wszystkich urządzeń w 2025 roku
     Y = 2025
     for M in [8]:  # Miesiące od 1 do 12
         first_day = f"{Y}-{M:02d}-01"
@@ -81,6 +88,20 @@ def pull_all_solarman():
         last_day = f"{Y}-{M:02d}-{last_day_num:02d}"
         print(f"{first_day}  →  {last_day}")
         download_all_solarman_reports(first_day, last_day)
+
+def pull_last_solarman():
+    # Pobieranie ostatnich raportów Solarman dla wszystkich urządzeń od ostaniej aktualizacji
+    # sprawdzenie ostatniego dnia w bazie danych dla każdej instalacji
+    engine = connect_db()
+    with engine.connect() as connection:
+        result = connection.execute("SELECT device_id,sn,parent_sn, MAX(date) FROM solarman_reports GROUP BY sn")
+        for row in result:
+            device_id,sn,parent_sn, last_date = row
+            print(f"Urządzenie {device_id} ma ostatni raport z dnia {last_date}")
+            today= calendar.datetime.date.today()
+            # Pobierz raport od ostatniego dnia w bazie do dzisiaj
+            download_solarman_report(device_id, device_id, device_id, last_date, last_date)
+
 
 
 if __name__  == "__main__":
