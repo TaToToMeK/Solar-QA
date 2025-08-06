@@ -198,7 +198,7 @@ def create_import_table(engine, import_table_name):
 
     print(f"✅ Utworzono importową tabelę `{import_table_name}` na podstawie `{main_table_name}`.")
 def safe_insert_dataframe_to_sql(engine, df, import_table_name):
-    #Wstawia dane z df do tabeli import_table_name, tylko dla kolumn istniejących w tabeli SQL.
+    #Wstawia dane z df_db_data do tabeli import_table_name, tylko dla kolumn istniejących w tabeli SQL.
     #Czyści dane zgodnie z typami SQL.
     try:
         # 1. Pobierz kolumny z tabeli
@@ -425,26 +425,27 @@ def process_excel_file(file_path, import_table_name='IMPORT_DATA', debug_table_n
     merge_import_to_main(engine,import_table_name)
     return ("process_excel_file - ended")
 
-
-if __name__  == "__main__":
-    #process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_229763641_SS3ES125P38069_od_2025-07-01_do_2025-07-31.xlsx")
-    #exit(1)
-
-    all_files=list_all_file_paths(config.EXTRACTED_TEMP_DIR, "solarmanpv*.xlsx")
+def main():
+    # Główna funkcja do przetwarzania plików Excel
+    all_files = list_all_file_paths(config.EXTRACTED_TEMP_DIR, "solarmanpv*.xlsx")
     # all_files=list_all_file_paths("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/", "sol*.xlsx")
     print(f"Znaleziono {len(all_files)}  plików  w {config.EXTRACTED_TEMP_DIR}sol*.xlsx :")
-    print ("\n".join(all_files))
+    print("\n".join(all_files))
     for file in all_files:
         print(f"Przetwarzanie pliku: {file}")
         process_excel_file(file, import_table_name='IMPORT_DATA', debug_table_name='')
         print("--------------------------------------------------")
+    logger.info("process_excel_file completed for all files.")
 
-#process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_229763641_SS3ES125P38069_od_2025-01-01_do_2025-01-31.xlsx")
-#process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/SolarmanSampleSize5.xlsx")
-#process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/solarmanpv_230709814_SS3ES150NAT230_short.xlsx")
-#process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/SolarmanSample.xlsx")
-#
+if __name__  == "__main__":
+    main()
+
 '''
+process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_229763641_SS3ES125P38069_od_2025-07-01_do_2025-07-31.xlsx")
+process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_229763641_SS3ES125P38069_od_2025-01-01_do_2025-01-31.xlsx")
+process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/SolarmanSampleSize5.xlsx")
+process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/solarmanpv_230709814_SS3ES150NAT230_short.xlsx")
+process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/SolarmanSample.xlsx")
 process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_230709814_SS3ES150NAT230_od_2025-02-01_do_2025-02-28.xlsx")
 process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_229763641_SS3ES125P38069_od_2025-01-01_do_2025-01-31.xlsx")
 process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_229763641_SS3ES125P38069_od_2025-01-01_do_2025-01-31.xlsx")

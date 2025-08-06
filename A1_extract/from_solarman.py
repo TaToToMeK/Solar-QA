@@ -88,6 +88,7 @@ def pull_all_solarman():
         last_day = f"{Y}-{M:02d}-{last_day_num:02d}"
         print(f"{first_day}  →  {last_day}")
         download_all_solarman_reports(first_day, last_day)
+    logger.info("pull_all_solarman finished")
 
 def pull_last_solarman():
     # Pobieranie ostatnich raportów Solarman dla wszystkich urządzeń od ostaniej aktualizacji

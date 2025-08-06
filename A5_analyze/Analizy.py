@@ -4,7 +4,13 @@ import pandas as pd
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import numpy as np
 import logging
+logging.basicConfig(
+    level=logging.INFO,  # lub DEBUG, WARNING, ERROR, CRITICAL
+    format='%(asctime)s | %(levelname)s | %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 logger = logging.getLogger(__name__)
 
 def analyze_instalations(engine):
@@ -21,7 +27,7 @@ def load_db_data(engine, date_str: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame z kolumnami [sn, system_time, daily_production_active_kwh_]
     """
-    date_start = datetime.strptime(date_str, "%Y-%m-%d")
+    date_start = datetime.strptime(date_str, "%Y-%m-%d")  # początek dnia
     date_end = date_start + timedelta(days=1)
 
     query = """
@@ -103,14 +109,72 @@ def normalize_kW(resampled,timeprobe:str,coeff)-> pd.DataFrame:    #    Oblicza 
         kW_values.append(norm_kW)
     return kW_values
 
-def interpolate_energy_linear_grid(df: pd.DataFrame,df_coeff,date_str, timeprobe: str ):
-    # df musi zawierać kolumny 'sn', 'system_time', 'daily_production_active_kwh_'
+def get_coeff_for_sn(df_coeff, sn):
+    return df_coeff[df_coeff['sn'] == sn]['coefficient'].values[0] if not df_coeff[df_coeff['sn'] == sn].empty else 1
+def interpolate_at(df, t):
+    #Zwraca liniowo interpolowaną wartość w chwili `t`.
+    #Zakłada df z DateTimeIndex i jedną kolumną.
+    if t in df.index:
+        return df.loc[t].values[0]
+    if t < df.index[0] or t > df.index[-1]:
+        raise ValueError("Czas poza zakresem indeksu")
+    left = df[df.index <= t].iloc[-1]
+    right = df[df.index >= t].iloc[0]
+    t_val = np.interp(
+        t.value,  # ns timestamp
+        [left.name.value, right.name.value],
+        [left.values[0], right.values[0]]
+    )
+    #print (f"Interpolacja dla {t} z {left.name}={left.values[0]} i {right.name}={right.values[0]} daje {t_val}")
+    return t_val
+
+def trapezoidal_integral(df, t1, t2):
+    """
+    Liczy całkę z danych (kW) pomiędzy t1 a t2 metodą trapezów.
+    Automatycznie interpoluje t1 i t2, jeśli nie są w indeksie.
+    Zwraca wartość w kWh.
+    """
+    assert df.index.is_monotonic_increasing and df.index.is_unique, "Index musi być rosnący i unikalny"
+    assert t1 < t2
+    df_sel = df[(df.index >= t1) & (df.index <= t2)].copy()
+    # Interpoluj t1/t2 jeśli nie istnieją w indeksie
+    if t1 not in df_sel.index:
+        df_sel.loc[t1] = interpolate_at(df, t1)
+    if t2 not in df_sel.index:
+        df_sel.loc[t2] = interpolate_at(df, t2)
+    df_sel = df_sel.sort_index()
+    #debug
+    target = pd.Timestamp("2025-07-02 12:54:00")
+    #if abs((t1 - target).total_seconds()) < 30:
+    #    save_df_sel_debug(df_sel) # 4 debug
+
+    values = df_sel.iloc[:, 0].values # zakładamy że dane są w pierwszej kolumnie df_sel
+    times = df_sel.index.astype(np.int64) / 1e9  # sekundy
+    trapz_integral=np.trapz(values, x=times) / 3600  # kWh
+    average_power = trapz_integral / ((t2 - t1).total_seconds() / 3600)  # średnia moc w kW
+
+    return average_power
+
+def save_df_sel_debug(df_sel: pd.DataFrame, filename="debug_integral.xlsx"):
+
+    # Dodaj kolumny pomocnicze: timestamp i timestamp_sec
+    df_debug = df_sel.copy()
+    df_debug["timestamp"] = df_debug.index
+    df_debug["timestamp_sec"] = df_debug.index.astype(np.int64) / 1e9  # sekundy
+
+    # Zapisz do pliku xlsx
+    filename= f"{config.TMP_DIR}/{filename}"
+    df_debug.to_excel(filename, index=False)
+    print(f"Zapisano dane do pliku: {filename}")
+
+def interpolate_energy_linear_grid(df_db_data: pd.DataFrame, df_coeff, date_str, timeprobe: str):
+    # df_db_data musi zawierać kolumny 'sn', 'system_time', 'daily_production_active_kwh_'
     print("\n=================\nInterpolacja energii na siatce czasowej:", timeprobe)
-    df = df.copy()
-    df['system_time'] = pd.to_datetime(df['system_time'])
-    df = df.sort_values(['sn', 'system_time'])
-    start_raw = df['system_time'].min()
-    end_raw = df['system_time'].max()
+    df_db_data = df_db_data.copy()
+    df_db_data['system_time'] = pd.to_datetime(df_db_data['system_time'])
+    df_db_data = df_db_data.sort_values(['sn', 'system_time'])
+    start_raw = df_db_data['system_time'].min()
+    end_raw = df_db_data['system_time'].max()
     start = start_raw.floor('H')  # w dół do pełnej godziny
     end = end_raw.ceil('10min')  # w górę
     # Tworzenie równomiernej siatki co timeprobe
@@ -121,35 +185,96 @@ def interpolate_energy_linear_grid(df: pd.DataFrame,df_coeff,date_str, timeprobe
     df_all_sn_kW=pd.DataFrame(index=full_index)
 
     # Iteracja po grupach sn
-    for sn, group in df.groupby('sn'):
-        # utwórz unormowany całościowy df dla wszystkich instalacji
-        print(f"\nPrzetwarzanie sn: {sn}, liczba punktów: {len(group)}")
+    for sn, group in df_db_data.groupby('sn'):
+        # utwórz unormowany całościowy df_db_data dla wszystkich instalacji
+        logger.info(f"\nPrzetwarzanie sn: {sn}, liczba punktów: {len(group)}")
         # if sn != 'SS3ES125P38069':      continue #  odkomentuj do testów
         # print (group)
         sn_resampled=resample_sn (group, full_index, start_raw, end_raw)
-        coeff= df_coeff[df_coeff['sn'] == sn]['coefficient'].values[0] if not df_coeff[df_coeff['sn'] == sn].empty else 1
-        print(f"SN: {sn}, Coefficient: {coeff}")
+        coeff= get_coeff_for_sn(df_coeff, sn)
+        logger.info(f"SN: {sn}, Coefficient: {coeff}")
         sn_kW = normalize_kW(sn_resampled,timeprobe,coeff)
         #sn_kW=sn_resampled #odkomentuj do testów
         df_resampled = pd.DataFrame({'tick': full_index, 'iterpolated_values': sn_kW})
         df_all_sn_kW[sn]= sn_kW # dodajemy kolumnę z mocą kW dla danego sn
         #plot_interpolation_vs_original(df_resampled, group)
-    '''
-    for sn, group in df.groupby('sn'):
-        # policz medianę kW z ominięciem aktualnego sn:
-        df_bez_sn_kW = df_all_sn_kW.drop(columns=sn)
-        # dodaj kolumnę z medianą kW dla danego sn
-        df_mediana = df_bez_sn_kW.median(axis=1, skipna=True)
 
-        plot_all_with_median(df_mediana, date_str)
-    '''
+    for sn, group in df_db_data.groupby('sn'):
+
+        logger.info(f"Analiza instalacji SN: {sn}")
+        group_sn = df_db_data[df_db_data['sn'] == sn].reset_index(drop=True)
+
+        try:
+            analyze_sn(sn, get_coeff_for_sn(df_coeff, sn), group_sn, df_all_sn_kW, full_index,timeprobe, date_str)
+        except Exception as e:
+            logger.error(f"Błąd podczas analizy instalacji {sn}: {e}")
+
+
 
     df_all_sn_kW['median_kW'] = df_all_sn_kW.median(axis=1, skipna=True)
-    #plot_all_power_series(df_all_sn_kW,date_str)
-    #plot_all_with_median(df_all_sn_kW, date_str, save_path=f"{config.PLOTS_DIR}/median_{date_str}.png")
-    plot_all_with_median(df_all_sn_kW, date_str)
-
+    plot_all_with_median(df_all_sn_kW, date_str, save_path=f"{config.PLOTS_DIR}/median_{date_str}.png")
+    #plot_all_with_median(df_all_sn_kW, date_str)
     return df_all_sn_kW #all
+
+def analyze_sn(sn, coeff, group, df_all_sn_kW,full_index,timeprobe:str, date_str: str) -> None:
+    # sn - identyfikator instalacji
+    # coeff - współczynnik dla instalacji
+    # group - DataFrame z danymi źródłowymi dla tej instalacji    
+    # df_all_sn_kW - DataFrame z mocą unormowaną kW dla wszystkich instalacji
+    # timeprobe - siatka czasowa, np. '1min', '2min'
+    # policz medianę kW z ominięciem aktualnego sn:
+    df_bez_sn_kW = df_all_sn_kW.drop(columns=sn)
+    df_mediana_bez_sn = df_bez_sn_kW.median(axis=1, skipna=True)
+    # przelicz unormowaną medianę na expected_profile w kW mnożąc przez coeff
+    df_expected_profile = pd.DataFrame({
+#        'first_normalized': df_mediana_bez_sn.values,
+        'expected': df_mediana_bez_sn.values * coeff
+    }, index=full_index)
+    #plot_all_power_series(df_expected_profile, sn, date_str) # sam expected power profile
+
+    rows = []
+    for i in range(1, len(group)):
+        prev_row = group.loc[i - 1]
+        curr_row = group.loc[i]
+
+        t_prev = prev_row['system_time']
+        t_curr = curr_row['system_time']
+        delta_t_s = (t_curr - t_prev).total_seconds()
+
+        e_prev = prev_row['daily_production_active_kwh_']
+        e_curr = curr_row['daily_production_active_kwh_']
+        delta_kWh = e_curr - e_prev
+
+        # Pomijamy błędne przypadki
+        if delta_t_s <= 0 or delta_kWh < 0:
+            continue
+
+        power_kW = delta_kWh / (delta_t_s / 3600)
+
+        # Porównanie z profilem oczekiwanym
+        expected_power_kW=trapezoidal_integral(df_expected_profile, t_prev, t_curr)
+        #print (f"t_curr={t_curr}   expected_power_kW= {expected_power_kW:.3f}")
+        # Zapis do listy słowników
+        rows.append({
+#            'sn': curr_row['sn'],
+            'system_time': t_curr,
+#            'delta_t_s': delta_t_s,
+#            'delta_kWh': delta_kWh,
+            'power_kW': power_kW,
+            'expected_power_kW': expected_power_kW,
+            'difference': power_kW-expected_power_kW
+        })
+
+    # Utwórz nowy DataFrame z wyników
+    df_power = pd.DataFrame(rows).set_index('system_time')
+    #print (df_power)
+    plot_all_power_series(df_power, sn, date_str)
+
+
+
+    # zapisz w excel
+    #df_expected_profile.to_excel(f"{config.TMP_DIR}/expected_profile_{sn}_{date_str}.xlsx", index=True)
+    #plot_all_power_series(df_expected_profile,"wszystkich", date_str)
 
 def plot_interpolation_vs_original(result: pd.DataFrame, group: pd.DataFrame) -> None:
     """
@@ -179,17 +304,33 @@ def plot_interpolation_vs_original(result: pd.DataFrame, group: pd.DataFrame) ->
     plt.grid(True)
     plt.tight_layout()
     plt.show()
-def plot_all_power_series(df_all,date_str):
-    # df_all: DataFrame z indeksem czasowym i kolumnami sn1, sn2, ...
+
+def plot_all_power_series(df_all, sn, date_str):
+
+    df_all = df_all.select_dtypes(include=[np.number])
+    df_all = df_all.dropna(how='all')
+    if df_all.empty:
+        print("⚠️ Brak danych do wykresu.")
+        return
+
+    # Wykres
     plt.figure(figsize=(12, 5))
-    df_all.plot(ax=plt.gca(), linewidth=2)
+    for col in df_all.columns:
+        plt.plot(df_all.index, df_all[col], label=col, marker = 'o', markersize = 1,linewidth=1)
+
     plt.xlabel("Czas")
     plt.ylabel("Moc [kW]")
-    plt.title("Porównanie wszystkich instalacji PV w dniu "+date_str)
-    plt.grid(True)
+    plt.title("Porównanie instalacji PV "+sn+" w dniu " + date_str)
     plt.legend(title="SN")
-    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
-    plt.tight_layout()
+    plt.grid(True)
+    ax = plt.gca()
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
+
+    try:
+        plt.tight_layout()
+    except Exception as e:
+        print("⚠️ tight_layout() error:", e)
+
     plt.show()
 def plot_all_with_median(df_all,date_str,save_path=None):
     plt.figure(figsize=(12, 5))
@@ -224,7 +365,7 @@ def analyze_day(engine,df_coeff,date_str):
     print("Dane z bazy danych dla dnia:", date_str)
     print("Liczba wierszy:", len(db_data))
     # print (db_data.head(10))
-    df_interpolated = interpolate_energy_linear_grid(db_data, df_coeff, date_str,timeprobe="5min")
+    df_interpolated = interpolate_energy_linear_grid(db_data, df_coeff, date_str,timeprobe="3min")
     print("Interpolacja energii dla dnia:", date_str)
     print("Liczba wierszy po interpolacji:", len(df_interpolated))
     # print (df_interpolated)
@@ -248,7 +389,9 @@ def main():
     days = pd.date_range(start_time, today)
     reference_cases = ["2025-04-25", "2025-05-14", "2025-05-22", "2025-05-25", "2025-06-05", "2025-07-02", "2025-07-05",
                        "2025-07-06", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-11"]
-    # days = [datetime.strptime(d, "%Y-%m-%d") for d in reference_cases] # odkomentuj dla testów wybranych dni
+    #reference_cases = ["2025-07-06", "2025-07-02"]
+
+    #days = [datetime.strptime(d, "%Y-%m-%d") for d in reference_cases] # odkomentuj dla testów wybranych dni
     for day in reversed(days):  # od końca
         date_str = day.strftime("%Y-%m-%d")
         analyze_day(engine,df_coeff,date_str)
