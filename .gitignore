@@ -7,6 +7,8 @@ devices_secrets*
 # Katalogi tymczasowe
 tmp/
 temp/
+output/
+
 
 # Python – pliki kompilowane i cache
 __pycache__/
