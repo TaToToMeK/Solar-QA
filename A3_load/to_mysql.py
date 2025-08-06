@@ -6,6 +6,9 @@ import pandas as pd
 from pathlib import Path
 from config.db import connect_db
 from config import config
+import logging
+logger = logging.getLogger(__name__)
+
 
 warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
 
