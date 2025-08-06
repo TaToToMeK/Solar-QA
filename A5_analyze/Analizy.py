@@ -1,8 +1,11 @@
 from config.db import connect_db
+from config import config
 import pandas as pd
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import logging
+logger = logging.getLogger(__name__)
 
 def analyze_instalations(engine):
     print("Pobranie statystyk STATS_N_DAYS  z bazy danych")
@@ -91,7 +94,7 @@ def timeprobe_to_hours(timeprobe: str) -> float:
 
 def normalize_kW(resampled,timeprobe:str,coeff)-> pd.DataFrame:    #    Oblicza różnicę między kolejnymi wartościami w resamplowanym DataFrame.
     if len(resampled) < 2:
-        return df_resampled  # Nie ma różnicy do obliczenia
+        return resampled  # Nie ma różnicy do obliczenia
     kW_values = [0]  # Pierwsza wartość różnicy jest zerowa
     for i in range(1, len(resampled)):
         dY = max(0,resampled[i] - resampled[i - 1])  # obsługa case typu sn#069 2025-07-05 21:10
@@ -101,11 +104,11 @@ def normalize_kW(resampled,timeprobe:str,coeff)-> pd.DataFrame:    #    Oblicza 
     return kW_values
 
 def interpolate_energy_linear_grid(df: pd.DataFrame,df_coeff,date_str, timeprobe: str ):
+    # df musi zawierać kolumny 'sn', 'system_time', 'daily_production_active_kwh_'
     print("\n=================\nInterpolacja energii na siatce czasowej:", timeprobe)
     df = df.copy()
     df['system_time'] = pd.to_datetime(df['system_time'])
     df = df.sort_values(['sn', 'system_time'])
-    result = []
     start_raw = df['system_time'].min()
     end_raw = df['system_time'].max()
     start = start_raw.floor('H')  # w dół do pełnej godziny
@@ -119,20 +122,31 @@ def interpolate_energy_linear_grid(df: pd.DataFrame,df_coeff,date_str, timeprobe
 
     # Iteracja po grupach sn
     for sn, group in df.groupby('sn'):
+        # utwórz unormowany całościowy df dla wszystkich instalacji
         print(f"\nPrzetwarzanie sn: {sn}, liczba punktów: {len(group)}")
         # if sn != 'SS3ES125P38069':      continue #  odkomentuj do testów
-        #print (group)
+        # print (group)
         sn_resampled=resample_sn (group, full_index, start_raw, end_raw)
         coeff= df_coeff[df_coeff['sn'] == sn]['coefficient'].values[0] if not df_coeff[df_coeff['sn'] == sn].empty else 1
         print(f"SN: {sn}, Coefficient: {coeff}")
         sn_kW = normalize_kW(sn_resampled,timeprobe,coeff)
         #sn_kW=sn_resampled #odkomentuj do testów
         df_resampled = pd.DataFrame({'tick': full_index, 'iterpolated_values': sn_kW})
-        df_all_sn_kW[sn]= sn_kW
+        df_all_sn_kW[sn]= sn_kW # dodajemy kolumnę z mocą kW dla danego sn
         #plot_interpolation_vs_original(df_resampled, group)
+    '''
+    for sn, group in df.groupby('sn'):
+        # policz medianę kW z ominięciem aktualnego sn:
+        df_bez_sn_kW = df_all_sn_kW.drop(columns=sn)
+        # dodaj kolumnę z medianą kW dla danego sn
+        df_mediana = df_bez_sn_kW.median(axis=1, skipna=True)
+
+        plot_all_with_median(df_mediana, date_str)
+    '''
+
     df_all_sn_kW['median_kW'] = df_all_sn_kW.median(axis=1, skipna=True)
     #plot_all_power_series(df_all_sn_kW,date_str)
-    plot_all_with_median(df_all_sn_kW, date_str, save_path=f"/media/ramdisk/median_{date_str}.png")
+    #plot_all_with_median(df_all_sn_kW, date_str, save_path=f"{config.PLOTS_DIR}/median_{date_str}.png")
     plot_all_with_median(df_all_sn_kW, date_str)
 
     return df_all_sn_kW #all
@@ -204,13 +218,13 @@ def plot_all_with_median(df_all,date_str,save_path=None):
         print(f"Wykres zapisano do {save_path}")
     else:
         plt.show()
-def analyze_day(date_str):
+def analyze_day(engine,df_coeff,date_str):
     global db_data, df_interpolated
     db_data = load_db_data(engine, date_str)
     print("Dane z bazy danych dla dnia:", date_str)
     print("Liczba wierszy:", len(db_data))
     # print (db_data.head(10))
-    df_interpolated = interpolate_energy_linear_grid(db_data, df_coeff, date_str,timeprobe="4min")
+    df_interpolated = interpolate_energy_linear_grid(db_data, df_coeff, date_str,timeprobe="5min")
     print("Interpolacja energii dla dnia:", date_str)
     print("Liczba wierszy po interpolacji:", len(df_interpolated))
     # print (df_interpolated)
@@ -219,23 +233,29 @@ def analyze_day(date_str):
     df_interpolated.to_excel("/media/ramdisk/interpolated_energy.xlsx", index=False)
     print("Dane zostały zapisane do pliku interpolated_energy.xlsx")
 
-#==========================
-#db_data = pd.read_excel("/media/ramdisk/db_data_manual_sample.xlsx")
-#df_interpolated=interpolate_energy_linear_grid(db_data, timeprobe="1min")
-#exit(1)
-#==========================
-engine = connect_db()
-#print (df_coeff.head(10))
+def main():
+    # ==========================
+    # db_data = pd.read_excel("/media/ramdisk/db_data_manual_sample.xlsx")
+    # df_interpolated=interpolate_energy_linear_grid(db_data, timeprobe="1min")
+    # exit(1)
+    # ==========================
+    engine = connect_db()
+    # print (df_coeff.head(10))
 
-df_coeff= analyze_instalations(engine)
-today= datetime.now().strftime("%Y-%m-%d")
-start_time= (datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d")
-days=pd.date_range(start_time, today)
-reference_cases = ["2025-04-25","2025-05-14","2025-05-22","2025-05-25","2025-06-05","2025-07-02", "2025-07-05", "2025-07-06", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-11"]
-#days = [datetime.strptime(d, "%Y-%m-%d") for d in reference_cases] # odkomentuj dla testów wybranych dni
-for day in reversed(days):  # od końca
-    date_str = day.strftime("%Y-%m-%d")
-    analyze_day(date_str)
+    df_coeff = analyze_instalations(engine)
+    today = datetime.now().strftime("%Y-%m-%d")
+    start_time = (datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d")
+    days = pd.date_range(start_time, today)
+    reference_cases = ["2025-04-25", "2025-05-14", "2025-05-22", "2025-05-25", "2025-06-05", "2025-07-02", "2025-07-05",
+                       "2025-07-06", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-11"]
+    # days = [datetime.strptime(d, "%Y-%m-%d") for d in reference_cases] # odkomentuj dla testów wybranych dni
+    for day in reversed(days):  # od końca
+        date_str = day.strftime("%Y-%m-%d")
+        analyze_day(engine,df_coeff,date_str)
+
+if __name__== "__main__":
+    main()
+
 
 
 
