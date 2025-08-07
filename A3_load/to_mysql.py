@@ -236,7 +236,7 @@ def safe_insert_dataframe_to_sql(engine, df, import_table_name):
 
         # 4. Insert do SQL
         df_clean.to_sql(import_table_name, con=engine, if_exists='append', index=False, method='multi', chunksize=1000)
-        print(f"✅ Wstawiono {len(df_clean)} rekordów do {import_table_name} (kolumny: {common_columns})")
+        logger.info(f" Wstawiono {len(df_clean)} rekordów do {import_table_name} (kolumny: {common_columns})")
 
     except exc.SQLAlchemyError as e:
         print(f"❌ Błąd przy zapisie do bazy: {e}")
@@ -297,7 +297,7 @@ def merge_import_to_main(engine, import_table="IMPORT_DATA"):
                  i.system_time = s.system_time 
 #                AND i.updated_time = s.updated_time
         """
-        print (f"Q1: {Q1}")
+        #print (f"Q1: {Q1}")
         duplicates = conn.execute(text(Q1)).scalar()
 
         # 2. Różniące się rekordy
@@ -310,7 +310,7 @@ def merge_import_to_main(engine, import_table="IMPORT_DATA"):
             WHERE CONCAT_WS('|', {','.join(f'i.`{col}`' for col in ['sn','system_time'])}, '') <> 
                   CONCAT_WS('|', {','.join(f's.`{col}`' for col in ['sn','system_time'])}, '')
         """
-        print (f"Q2: {Q2}")
+        #print (f"Q2: {Q2}")
         differing = conn.execute(text(Q2)).scalar()
 
         # 3. Wstaw tylko nowe
@@ -324,7 +324,7 @@ def merge_import_to_main(engine, import_table="IMPORT_DATA"):
 #                  AND s.updated_time = i.updated_time
             )
         """
-        print(f"Q3: {Q3}")
+        #print(f"Q3: {Q3}")
         inserted_result = conn.execute(text(Q3))
 
         inserted_rows = inserted_result.rowcount

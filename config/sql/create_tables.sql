@@ -42,4 +42,21 @@ CREATE TABLE `SOLARMAN_DATA` (
   `inverter_status` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`sn`,`system_time`,`updated_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+;
+
+CREATE TABLE `PV_POWER_ANALYSIS` (
+  `sn` varchar(16) NOT NULL,
+  `system_time` datetime NOT NULL,
+  `actual_power_kW` float DEFAULT NULL,
+  `expected_power_kW` float DEFAULT NULL,
+  `difference_power_kW` float DEFAULT NULL,
+  `dt_seconds` float DEFAULT NULL,
+  `updated_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `diff_energy_kWh` float DEFAULT NULL,
+  `grid_status` varchar(40) DEFAULT NULL,
+  `inverter_status` varchar(40) DEFAULT NULL,
+  `no_power` tinyint DEFAULT NULL,
+  PRIMARY KEY (`sn`,`system_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+;
 

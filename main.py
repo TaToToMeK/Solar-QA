@@ -3,9 +3,10 @@ from A3_load import to_mysql
 import logging
 logging.basicConfig(
     level=logging.INFO,  # lub DEBUG, WARNING, ERROR, CRITICAL
-    format='%(asctime)s | %(levelname)s | %(message)s',
+    format='%(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
+
 logger = logging.getLogger(__name__)
 
 

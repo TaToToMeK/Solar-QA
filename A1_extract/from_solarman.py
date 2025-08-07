@@ -48,34 +48,35 @@ def download_solarman_report(device_id, device_sn, parent_sn, start_day, end_day
         response = requests.post(config.SOLARMAN_URL, headers=headers, json=payload)
         content = response.content
         encoding = response.headers.get("Content-Encoding")
-        print("Content-Encoding:", encoding)
-        print("Content-Type:", response.headers.get("Content-Type"))
-        print("Pierwsze bajty:", response.content[:4])
+        #print("Content-Encoding:", encoding)
+        #print("Content-Type:", response.headers.get("Content-Type"))
+        #print("Pierwsze bajty:", response.content[:4])
         if response.status_code == 200:
             if encoding == "br" and not is_zip(content):
-                print("Dekompresja Brotli...")
+                #print("Dekompresja Brotli...")
                 content = brotli.decompress(content)
-            else:
-                print("Plik już rozpakowany lub nie wymaga dekompresji.")
+            # else: print("Plik już rozpakowany lub nie wymaga dekompresji.")
             with open(xls_filename, "wb") as f:
                 f.write(content)
-            print(f"Plik został zapisany jako {xls_filename}")
+            logger.info(f"Plik został zapisany jako {xls_filename}")
         else:
-            print("Błąd:", response.status_code, response.text[:500], file=sys.stderr)
+            error_string="Błąd: "+ str(response.status_code)+" "+ response.text[:500]
+            logger.error(error_string)
     except Exception as e:
-        print("Wystąpił błąd podczas pobierania raportu:", str(e), file=sys.stderr)
+        logger.error("Wystąpił błąd podczas pobierania raportu:", str(e))
 
 
 def download_all_solarman_reports(startDay, endDay):
     # pobiera raporty z zadanego przedziału czasowego dla wszystkich urządzeń z DEVICES_LIST_FILE i.e. devices_list.txt
     with open(config.DEVICES_LIST_FILE, "r") as file:
+        next(file) #pomija nagłówek pliku
         for i, line in enumerate(file, start=1):
             device_param = line.strip().split("\t")[:6]
             if len(device_param) != 6:
                 print(f"Wiersz {i} ma niewłaściwą liczbę elementów: {device_param}")
                 continue
             deviceName,deviceId,deviceSn,parentSn,system,admin = device_param
-            print(f"deviceName: {deviceName}, deviceId: {deviceId}, deviceSn: {deviceSn}, parentSn: {parentSn}, system: {system}, admin: {admin}")
+            logger.info(f"line={i},deviceName: {deviceName}, deviceId: {deviceId}, deviceSn: {deviceSn}, parentSn: {parentSn}, system: {system}, admin: {admin}")
             # Pobierz raport dla każdego urządzenia
             download_solarman_report(deviceId,deviceSn,parentSn,startDay,endDay)
 

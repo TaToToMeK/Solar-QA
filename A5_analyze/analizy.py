@@ -1,5 +1,9 @@
+from logging import DEBUG
+
 from config.db import connect_db
+from config.db import get_engine
 from config import config
+from sqlalchemy import text
 import pandas as pd
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
@@ -8,7 +12,7 @@ import numpy as np
 import logging
 logging.basicConfig(
     level=logging.INFO,  # lub DEBUG, WARNING, ERROR, CRITICAL
-    format='%(asctime)s | %(levelname)s | %(message)s',
+    format='%(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger = logging.getLogger(__name__)
@@ -67,7 +71,7 @@ def resample_sn(group, full_index, start_raw, end_raw):
     first_row = pd.DataFrame([row])
     group = pd.concat([first_row, group], ignore_index=True)
     ll=len(group)
-    print (f"resample_sn; group length: {ll}")
+    logger.debug (f"resample_sn; group length: {ll}")
     idxleft=0
     idxright=1
     value = 0
@@ -90,14 +94,12 @@ def resample_sn(group, full_index, start_raw, end_raw):
         #print (f"x1:{x1}\t tick:{tick}\t x2:{x2}\t [x1<tick<x2]: {x1<tick<x2} \t idxleft: {idxleft}\t idxleft: {idxleft} \t idxright: {idxright}\t value: {value}")
         result.append(value)
 
-    print(f"ending;   resampled lenght: {len(result)}")
+    logger.debug(f"ending;   resampled lenght: {len(result)}")
 
     return result
-
 def timeprobe_to_hours(timeprobe: str) -> float:
     # Konwertuje string np. '15min', '1H', '90s' na liczbę godzin (float).
     return pd.to_timedelta(timeprobe).total_seconds() / 3600
-
 def normalize_kW(resampled,timeprobe:str,coeff)-> pd.DataFrame:    #    Oblicza różnicę między kolejnymi wartościami w resamplowanym DataFrame.
     if len(resampled) < 2:
         return resampled  # Nie ma różnicy do obliczenia
@@ -108,7 +110,6 @@ def normalize_kW(resampled,timeprobe:str,coeff)-> pd.DataFrame:    #    Oblicza 
         norm_kW=kW/coeff
         kW_values.append(norm_kW)
     return kW_values
-
 def get_coeff_for_sn(df_coeff, sn):
     return df_coeff[df_coeff['sn'] == sn]['coefficient'].values[0] if not df_coeff[df_coeff['sn'] == sn].empty else 1
 def interpolate_at(df, t):
@@ -117,7 +118,9 @@ def interpolate_at(df, t):
     if t in df.index:
         return df.loc[t].values[0]
     if t < df.index[0] or t > df.index[-1]:
-        raise ValueError("Czas poza zakresem indeksu")
+        logger.error(f"Czas {t} poza zakresem indeksu  {df.index[0]} > t > {df.index[-1]} ; return value 0")
+        return 0
+        raise ValueError(f"Czas {t} poza zakresem indeksu  {df.index[0]} > t > {df.index[-1]} ")
     left = df[df.index <= t].iloc[-1]
     right = df[df.index >= t].iloc[0]
     t_val = np.interp(
@@ -127,7 +130,6 @@ def interpolate_at(df, t):
     )
     #print (f"Interpolacja dla {t} z {left.name}={left.values[0]} i {right.name}={right.values[0]} daje {t_val}")
     return t_val
-
 def trapezoidal_integral(df, t1, t2):
     """
     Liczy całkę z danych (kW) pomiędzy t1 a t2 metodą trapezów.
@@ -135,6 +137,8 @@ def trapezoidal_integral(df, t1, t2):
     Zwraca wartość w kWh.
     """
     assert df.index.is_monotonic_increasing and df.index.is_unique, "Index musi być rosnący i unikalny"
+    if not (t1 < t2):
+        logger.error(f"Czas początkowy {t1} musi być wcześniejszy niż czas końcowy {t2}")
     assert t1 < t2
     df_sel = df[(df.index >= t1) & (df.index <= t2)].copy()
     # Interpoluj t1/t2 jeśli nie istnieją w indeksie
@@ -154,19 +158,15 @@ def trapezoidal_integral(df, t1, t2):
     average_power = trapz_integral / ((t2 - t1).total_seconds() / 3600)  # średnia moc w kW
 
     return average_power
-
 def save_df_sel_debug(df_sel: pd.DataFrame, filename="debug_integral.xlsx"):
-
     # Dodaj kolumny pomocnicze: timestamp i timestamp_sec
     df_debug = df_sel.copy()
     df_debug["timestamp"] = df_debug.index
     df_debug["timestamp_sec"] = df_debug.index.astype(np.int64) / 1e9  # sekundy
-
     # Zapisz do pliku xlsx
     filename= f"{config.TMP_DIR}/{filename}"
     df_debug.to_excel(filename, index=False)
     print(f"Zapisano dane do pliku: {filename}")
-
 def interpolate_energy_linear_grid(df_db_data: pd.DataFrame, df_coeff, date_str, timeprobe: str):
     # df_db_data musi zawierać kolumny 'sn', 'system_time', 'daily_production_active_kwh_'
     print("\n=================\nInterpolacja energii na siatce czasowej:", timeprobe)
@@ -187,7 +187,7 @@ def interpolate_energy_linear_grid(df_db_data: pd.DataFrame, df_coeff, date_str,
     # Iteracja po grupach sn
     for sn, group in df_db_data.groupby('sn'):
         # utwórz unormowany całościowy df_db_data dla wszystkich instalacji
-        logger.info(f"\nPrzetwarzanie sn: {sn}, liczba punktów: {len(group)}")
+        logger.info(f"Przetwarzanie sn: {sn}, liczba punktów: {len(group)}")
         # if sn != 'SS3ES125P38069':      continue #  odkomentuj do testów
         # print (group)
         sn_resampled=resample_sn (group, full_index, start_raw, end_raw)
@@ -200,21 +200,82 @@ def interpolate_energy_linear_grid(df_db_data: pd.DataFrame, df_coeff, date_str,
         #plot_interpolation_vs_original(df_resampled, group)
 
     for sn, group in df_db_data.groupby('sn'):
-
-        logger.info(f"Analiza instalacji SN: {sn}")
         group_sn = df_db_data[df_db_data['sn'] == sn].reset_index(drop=True)
-
-        try:
-            analyze_sn(sn, get_coeff_for_sn(df_coeff, sn), group_sn, df_all_sn_kW, full_index,timeprobe, date_str)
-        except Exception as e:
-            logger.error(f"Błąd podczas analizy instalacji {sn}: {e}")
-
-
+        logger.info(f"Analiza instalacji SN: {sn} z {len(group_sn)} punktami  w dniu {date_str}")
+        df_power=analyze_sn(sn, get_coeff_for_sn(df_coeff, sn), group_sn, df_all_sn_kW, full_index,timeprobe, date_str)
 
     df_all_sn_kW['median_kW'] = df_all_sn_kW.median(axis=1, skipna=True)
     plot_all_with_median(df_all_sn_kW, date_str, save_path=f"{config.PLOTS_DIR}/median_{date_str}.png")
     #plot_all_with_median(df_all_sn_kW, date_str)
     return df_all_sn_kW #all
+
+def df_to_db(df: pd.DataFrame, engine, table_name: str, sn_value: str):
+    """
+    Zapisuje DataFrame do tabeli SQL:
+    - indeks DataFrame'u trafia do kolumny 'system_time'
+    - dodawana jest kolumna 'sn' z wartością sn_value
+    """
+    table_name_tmp=table_name+"_TMP"
+    df = df.copy()
+    df.index.name = "system_time"
+    df['dt_seconds'] = df.index.to_series().diff().dt.total_seconds().fillna(0)
+    df_to_save = df.reset_index()
+    df_to_save['sn'] = sn_value
+    with engine.begin() as connection:
+        df_to_save.to_sql(
+            name=table_name_tmp,
+            con=connection,
+            if_exists='replace',
+            index=False,
+            method='multi'
+        )
+    sql_insert = f"""
+    INSERT INTO {table_name} (
+        sn,
+        system_time,
+        actual_power_kW,
+        expected_power_kW,
+        difference_power_kW,
+        dt_seconds,
+        diff_energy_kWh,
+        zero_power,
+        grid_status,
+        inverter_status
+    )
+    SELECT
+        * 
+    FROM (
+        SELECT
+            tmp.sn,
+            tmp.system_time,
+            tmp.actual_power_kW,
+            tmp.expected_power_kW,
+            tmp.difference_power_kW,
+            tmp.dt_seconds,
+            tmp.difference_power_kW * tmp.dt_seconds / 3600 AS diff_energy_kWh,
+            tmp.actual_power_kW<=0 as zero_power,
+            dat.grid_status,
+            dat.inverter_status
+        FROM {table_name_tmp} tmp
+        LEFT JOIN SOLARMAN_DATA dat
+            ON dat.sn = tmp.sn AND dat.system_time = tmp.system_time
+    ) AS new
+    ON DUPLICATE KEY UPDATE
+        actual_power_kW     = new.actual_power_kW,
+        expected_power_kW   = new.expected_power_kW,
+        difference_power_kW = new.difference_power_kW,
+        dt_seconds          = new.dt_seconds,
+        diff_energy_kWh     = new.diff_energy_kWh,
+        zero_power          = new.zero_power,
+        grid_status         = new.grid_status,
+        inverter_status     = new.inverter_status;
+    """
+    sql_drop = f"DROP TABLE IF EXISTS {table_name_tmp};"
+
+    with engine.begin() as connection:
+        connection.execute(text(sql_insert))
+        connection.execute(text(sql_drop))
+
 
 def analyze_sn(sn, coeff, group, df_all_sn_kW,full_index,timeprobe:str, date_str: str) -> None:
     # sn - identyfikator instalacji
@@ -236,22 +297,16 @@ def analyze_sn(sn, coeff, group, df_all_sn_kW,full_index,timeprobe:str, date_str
     for i in range(1, len(group)):
         prev_row = group.loc[i - 1]
         curr_row = group.loc[i]
-
         t_prev = prev_row['system_time']
         t_curr = curr_row['system_time']
         delta_t_s = (t_curr - t_prev).total_seconds()
-
         e_prev = prev_row['daily_production_active_kwh_']
         e_curr = curr_row['daily_production_active_kwh_']
         delta_kWh = e_curr - e_prev
-
         # Pomijamy błędne przypadki
         if delta_t_s <= 0 or delta_kWh < 0:
             continue
-
-        power_kW = delta_kWh / (delta_t_s / 3600)
-
-        # Porównanie z profilem oczekiwanym
+        actual_power_kW = delta_kWh / (delta_t_s / 3600)
         expected_power_kW=trapezoidal_integral(df_expected_profile, t_prev, t_curr)
         #print (f"t_curr={t_curr}   expected_power_kW= {expected_power_kW:.3f}")
         # Zapis do listy słowników
@@ -260,22 +315,30 @@ def analyze_sn(sn, coeff, group, df_all_sn_kW,full_index,timeprobe:str, date_str
             'system_time': t_curr,
 #            'delta_t_s': delta_t_s,
 #            'delta_kWh': delta_kWh,
-            'power_kW': power_kW,
+            'actual_power_kW': actual_power_kW,
             'expected_power_kW': expected_power_kW,
-            'difference': power_kW-expected_power_kW
+            'difference_power_kW': actual_power_kW-expected_power_kW
         })
+
+    if logger.isEnabledFor(logging.DEBUG):
+        # zapisz expected profile do pliku
+        df_expected_profile.to_excel(f"{config.TMP_DIR}/expected_profile_{sn}_{date_str}.xlsx", index=True)
+        plot_all_power_series(df_expected_profile, sn, date_str)
+        logger.info(f"df_power.index: {type(df_power.index)}, {df_power.index.dtype}, {df_power.index.min()} - {df_power.index.max()}")
+        logger.info(f"df_power.dtypes:\n{df_power.dtypes}")
 
     # Utwórz nowy DataFrame z wyników
     df_power = pd.DataFrame(rows).set_index('system_time')
+    df_power
     #print (df_power)
-    plot_all_power_series(df_power, sn, date_str)
+    #plot_all_power_series(df_power, sn, date_str)
 
+    # Zapisz df_power  w DB w nowej tabeli tymczasowej
+    table_name="PV_POWER_ANALYSIS"
+    df_to_db(df_power, get_engine(), table_name=table_name, sn_value=sn)
+    logger.info(f"do tabeli {table_name} dopisano dane dla SN: {sn}, liczba wierszy: {len(df_power)}, data range: {df_power.index.min()} - {df_power.index.max()}")
 
-
-    # zapisz w excel
-    #df_expected_profile.to_excel(f"{config.TMP_DIR}/expected_profile_{sn}_{date_str}.xlsx", index=True)
-    #plot_all_power_series(df_expected_profile,"wszystkich", date_str)
-
+    return df_power
 def plot_interpolation_vs_original(result: pd.DataFrame, group: pd.DataFrame) -> None:
     """
     Rysuje porównanie interpolowanych danych z oryginalnymi pomiarami.
@@ -304,7 +367,6 @@ def plot_interpolation_vs_original(result: pd.DataFrame, group: pd.DataFrame) ->
     plt.grid(True)
     plt.tight_layout()
     plt.show()
-
 def plot_all_power_series(df_all, sn, date_str):
 
     df_all = df_all.select_dtypes(include=[np.number])
@@ -341,11 +403,11 @@ def plot_all_with_median(df_all,date_str,save_path=None):
 
     # Mediana — na końcu, grubszą linią
     plt.plot(df_all.index, df_all['median_kW'],
-             label='Mediana', color='black', linewidth=2.5, linestyle='--')
+             label='Mediana', color='black', linewidth=1, linestyle='--')
 
     plt.xlabel("Czas")
-    plt.ylabel("Moc [kW]")
-    plt.title("Mediana instalacji PV w dniu "+date_str)
+    plt.ylabel("Moc unormowana  [kW/kW]")
+    plt.title("Moc w dniu "+date_str)
     plt.legend()
     plt.grid(True)
     ax = plt.gca()
@@ -356,23 +418,25 @@ def plot_all_with_median(df_all,date_str,save_path=None):
     if save_path:
         plt.savefig(save_path, dpi=300)
         plt.close()
-        print(f"Wykres zapisano do {save_path}")
+        logger.info(f"Wykres zapisano do {save_path}")
     else:
         plt.show()
 def analyze_day(engine,df_coeff,date_str):
     global db_data, df_interpolated
     db_data = load_db_data(engine, date_str)
-    print("Dane z bazy danych dla dnia:", date_str)
-    print("Liczba wierszy:", len(db_data))
-    # print (db_data.head(10))
+    logger.debug("Dane z bazy danych dla dnia:"+ date_str)
+    logger.debug(f"Liczba wierszy: {len(db_data)}")
+    logger.debug(db_data.head(10))
     df_interpolated = interpolate_energy_linear_grid(db_data, df_coeff, date_str,timeprobe="3min")
-    print("Interpolacja energii dla dnia:", date_str)
-    print("Liczba wierszy po interpolacji:", len(df_interpolated))
-    # print (df_interpolated)
-    db_data.to_excel("/media/ramdisk/db_data.xlsx", index=False)
-    print("Dane z bazy danych zostały zapisane do pliku db_data.xlsx")
-    df_interpolated.to_excel("/media/ramdisk/interpolated_energy.xlsx", index=False)
-    print("Dane zostały zapisane do pliku interpolated_energy.xlsx")
+    logger.info(f"Interpolacja energii dla dnia: {date_str}")
+    logger.info(f"Liczba wierszy po interpolacji:{len(df_interpolated)}")
+
+
+    if logger.isEnabledFor(level=DEBUG):
+        db_data.to_excel("/media/ramdisk/db_data.xlsx", index=False)
+        logger.info("Dane z bazy danych zostały zapisane do pliku db_data.xlsx")
+        df_interpolated.to_excel("/media/ramdisk/interpolated_energy.xlsx", index=False)
+        logger.info("Dane zostały zapisane do pliku interpolated_energy.xlsx")
 
 def main():
     # ==========================
@@ -384,14 +448,21 @@ def main():
     # print (df_coeff.head(10))
 
     df_coeff = analyze_instalations(engine)
-    today = datetime.now().strftime("%Y-%m-%d")
-    start_time = (datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d")
-    days = pd.date_range(start_time, today)
-    reference_cases = ["2025-04-25", "2025-05-14", "2025-05-22", "2025-05-25", "2025-06-05", "2025-07-02", "2025-07-05",
-                       "2025-07-06", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-11"]
+    #reference_cases = ["2025-04-25", "2025-05-14", "2025-05-22", "2025-05-25", "2025-06-05", "2025-07-02", "2025-07-05","2025-07-06", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-11"]
     #reference_cases = ["2025-07-06", "2025-07-02"]
+    #reference_cases = ["2025-06-30"]
+    # jeśli reference_cases jest okreslone
+    if 'reference_cases' in locals(): #Zmienna reference_cases jest zdefiniowana
+        days = [datetime.strptime(d, "%Y-%m-%d") for d in reference_cases] # odkomentuj dla testów wybranych dni
+    else:
+        today = datetime.now().strftime("%Y-%m-%d")
+        start_time = (datetime.now() - timedelta(days=300)).strftime("%Y-%m-%d")
+        end_date = today
+        days = pd.date_range(start_time, end_date)
 
-    #days = [datetime.strptime(d, "%Y-%m-%d") for d in reference_cases] # odkomentuj dla testów wybranych dni
+    # lub przeliczanie wybranego zakresu
+    #days = pd.date_range(datetime.strptime("2025-01-30", "%Y-%m-%d"), datetime.strptime("2025-06-17", "%Y-%m-%d"))
+
     for day in reversed(days):  # od końca
         date_str = day.strftime("%Y-%m-%d")
         analyze_day(engine,df_coeff,date_str)
