@@ -1,14 +1,13 @@
 from config import config
+from config.config import DEVICES_LIST
+from config.db import connect_db
 import calendar
 import requests
 import json
 import sys
 import brotli
-from config.db import connect_db
 import logging
 logger = logging.getLogger(__name__)
-
-
 
 def is_zip(content):
     # XLSX (zip) zaczyna się od PK\x03\x04
@@ -42,7 +41,7 @@ def download_solarman_report(device_id, device_sn, parent_sn, start_day, end_day
     payload["startDay"] = start_day
     payload["endDay"] = end_day
     xls_filename = f"{config.EXTRACTED_TEMP_DIR}solarmanpv_{device_id}_{device_sn}_od_{start_day}_do_{end_day}.xlsx"
-    print(f"Pobieranie raportu Solarman: {xls_filename}")
+    logger.info(f"Pobieranie raportu Solarman: {xls_filename}")
 
     try:
         response = requests.post(config.SOLARMAN_URL, headers=headers, json=payload)
@@ -68,7 +67,7 @@ def download_solarman_report(device_id, device_sn, parent_sn, start_day, end_day
 
 def download_all_solarman_reports(startDay, endDay):
     # pobiera raporty z zadanego przedziału czasowego dla wszystkich urządzeń z DEVICES_LIST_FILE i.e. devices_list.txt
-    with open(config.DEVICES_LIST_FILE, "r") as file:
+    '''with open(config.DEVICES_LIST_FILE, "r") as file:
         next(file) #pomija nagłówek pliku
         for i, line in enumerate(file, start=1):
             device_param = line.strip().split("\t")[:6]
@@ -79,15 +78,23 @@ def download_all_solarman_reports(startDay, endDay):
             logger.info(f"line={i},deviceName: {deviceName}, deviceId: {deviceId}, deviceSn: {deviceSn}, parentSn: {parentSn}, system: {system}, admin: {admin}")
             # Pobierz raport dla każdego urządzenia
             download_solarman_report(deviceId,deviceSn,parentSn,startDay,endDay)
+    '''
 
-def pull_all_solarman():
-    # Pobieranie wszystkich raportów Solarman dla wszystkich urządzeń w 2025 roku
-    Y = 2025
+    for device in DEVICES_LIST.values():
+        logger.info(f"Device SN: {device['sn']}, Name: {device['name']}, ID: {device['id']}, Parent SN: {device['parent_sn']}, System: {device['system']}, Admin: {device['admin']}")
+        if device['system'] == 'solarman':
+            logger.info(f"download_solarman_report({device['id']},{device['sn']},{device['parent_sn']},startDay,endDay)")
+            download_solarman_report(device['id'],device['sn'],device['parent_sn'],startDay,endDay)
+        else:
+            logger.warning(f"Urządzenie {device['sn']} nie jest systemem Solarman, pomijam pobieranie raportu.")
+
+
+def pull_all_solarman(year=2025):
     for M in [8]:  # Miesiące od 1 do 12
-        first_day = f"{Y}-{M:02d}-01"
-        last_day_num = calendar.monthrange(Y, M)[1]
-        last_day = f"{Y}-{M:02d}-{last_day_num:02d}"
-        print(f"{first_day}  →  {last_day}")
+        first_day = f"{year}-{M:02d}-01"
+        last_day_num = calendar.monthrange(year, M)[1]
+        last_day = f"{year}-{M:02d}-{last_day_num:02d}"
+        logger.info(f"pobieranie z zakresu czasu {first_day}  →  {last_day}")
         download_all_solarman_reports(first_day, last_day)
     logger.info("pull_all_solarman finished")
 
