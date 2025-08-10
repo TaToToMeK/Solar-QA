@@ -40,10 +40,10 @@ def normalize_column_name(name):
 def correct_updated_time_values(df):
     if "updated_time" in df.columns:
         df["updated_time"] = normalize_timestamp(df["updated_time"])
-        print("✅ Przetworzono kolumnę 'updated_time'")
+        logger.debug("Przetworzono kolumnę 'updated_time'")
     if "system_time" in df.columns:
         df["system_time"] = normalize_timestamp(df["system_time"])
-        print("✅ Przetworzono kolumnę 'system_time'")
+        logger.debug("Przetworzono kolumnę 'system_time'")
 def clean_dataframe_for_insert(df, column_type_map):
     """
     Czyści dataframe zgodnie z typami kolumn SQL (decimal, datetime, varchar)
@@ -190,13 +190,13 @@ def create_import_table(engine, import_table_name):
     """
     main_table_name = os.getenv("DB_MAINTABLE")
     with engine.begin() as conn:
-        print(f"🗑️ DROP TABLE IF EXISTS `{import_table_name}`")
+        logger.debug(f"DROP TABLE IF EXISTS `{import_table_name}`")
         conn.execute(text(f"DROP TABLE IF EXISTS `{import_table_name}`;"))
 
-        print(f"🛠️ CREATE TABLE `{import_table_name}` LIKE `{main_table_name}`")
+        logger.debug(f"CREATE TABLE `{import_table_name}` LIKE `{main_table_name}`")
         conn.execute(text(f"CREATE TABLE `{import_table_name}` LIKE `{main_table_name}`;"))
 
-    print(f"✅ Utworzono importową tabelę `{import_table_name}` na podstawie `{main_table_name}`.")
+    logger.debug(f"Utworzono importową tabelę `{import_table_name}` na podstawie `{main_table_name}`.")
 def safe_insert_dataframe_to_sql(engine, df, import_table_name):
     #Wstawia dane z df_db_data do tabeli import_table_name, tylko dla kolumn istniejących w tabeli SQL.
     #Czyści dane zgodnie z typami SQL.
@@ -208,12 +208,13 @@ def safe_insert_dataframe_to_sql(engine, df, import_table_name):
         # 2. Wybierz tylko wspólne kolumny
         common_columns = [col for col in df.columns if col in db_columns]
         if not common_columns:
-            print("❌ Brak wspólnych kolumn do importu.")
+            logger.warning("Brak wspólnych kolumn do importu.")
             return
 
         df_subset = df[common_columns]
         # 3a Raport z czystości danych przed wstawieniem
-        print("🔍 Wiersze z błędnymi datami w system_time :", df[pd.to_datetime(df["system_time"], errors="coerce").isna()].shape[0])
+        #print("🔍 Wiersze z błędnymi datami w system_time :", df[pd.to_datetime(df["system_time"], errors="coerce").isna()].shape[0])
+        logger.warning(f"Wiersze z błędnymi datami w system_time : {df[pd.to_datetime(df['system_time'], errors='coerce').isna()].shape[0]}")
 
         for col in common_columns:
             sql_type = column_type_map[col][0]
@@ -221,15 +222,12 @@ def safe_insert_dataframe_to_sql(engine, df, import_table_name):
                 # Sprawdź, czy kolumna zawiera nieparsowalne liczby
                 failed = pd.to_numeric(df[col], errors="coerce").isna().sum()
                 if failed > 0:
-                    print("🔍 Wiersze z nieparsowalnymi liczbami w", col, ":", failed)
+                    logger.warning(f"Wiersze z nieparsowalnymi liczbami w {col} : {failed}")
             elif sql_type == "DATETIME":
                 # Sprawdź, czy kolumna zawiera nieparsowalne daty
                 failed = pd.to_datetime(df[col], errors="coerce").isna().sum()
                 if failed > 0:
-                    print("🔍 Wiersze z nieparsowalnymi datami w", col, ":", failed)
-
-
-
+                    logger.warning(f"Wiersze z nieparsowalnymi datami w {col} : {failed}")
         # 3. Oczyść dane do typów SQL
         df_clean = clean_dataframe_for_insert(df_subset, column_type_map)
         df_clean = clean_duplicated(df_clean)
@@ -328,64 +326,15 @@ def merge_import_to_main(engine, import_table="IMPORT_DATA"):
         inserted_result = conn.execute(text(Q3))
 
         inserted_rows = inserted_result.rowcount
-    print(f"🔁 Powtórzenia na kluczu (`sn`, `system_time`, `updated_time`): {duplicates}")
-    print(f"⚠️  Rekordy różniące się zawartością (kolizje danych): {differing}")
-    print(f"✅ Wstawiono nowych wierszy do {main_table}: {inserted_rows}")
+    logger.debug(f"Powtórzenia na kluczu (`sn`, `system_time`, `updated_time`): {duplicates}")
+    logger.debug(f"Rekordy różniące się zawartością (kolizje danych): {differing}")
+    logger.info(f"Wstawiono nowych wierszy do {main_table}: {inserted_rows}")
     return {
         "duplicates": duplicates,
         "differing": differing,
         "inserted": inserted_rows
     }
-def merge_import_to_main_previousversion(engine, import_table="IMPORT_DATA"):
-    main_table = os.getenv("DB_MAINTABLE")
-    """
-    Wstawia dane z tabeli importowej do głównej:
-    - nie nadpisuje istniejących rekordów (wg klucza sn, system_time, updated_time)
-    - liczy ile rekordów się powtarza, a ile różni
-    - zwraca podsumowanie
-    """
-    with engine.begin() as conn:
-        # 1. Powtórzenia wg klucza
-        duplicates = conn.execute(text(f"""
-            SELECT COUNT(*) FROM {import_table} i
-            JOIN {main_table} s
-              ON i.sn = s.sn AND
-                 i.system_time = s.system_time AND
-                 i.updated_time = s.updated_time
-        """)).scalar()
 
-        # 2. Różniące się rekordy
-        differing = conn.execute(text(f"""
-            SELECT COUNT(*) FROM {import_table} i
-            JOIN {main_table} s
-              ON i.sn = s.sn AND
-                 i.system_time = s.system_time AND
-                 i.updated_time = s.updated_time
-            WHERE CONCAT_WS('|', {','.join(f'i.`{col}`' for col in ['sn','system_time','updated_time'])}, '') <> 
-                  CONCAT_WS('|', {','.join(f's.`{col}`' for col in ['sn','system_time','updated_time'])}, '')
-        """)).scalar()
-
-        # 3. Wstaw tylko nowe
-        inserted_result = conn.execute(text(f"""
-            INSERT INTO {main_table}
-            SELECT * FROM {import_table} i
-            WHERE NOT EXISTS (
-                SELECT 1 FROM {main_table} s
-                WHERE s.sn = i.sn
-                  AND s.system_time = i.system_time
-                  AND s.updated_time = i.updated_time
-            )
-        """))
-
-        inserted_rows = inserted_result.rowcount
-    print(f"🔁 Powtórzenia na kluczu (`sn`, `system_time`, `updated_time`): {duplicates}")
-    print(f"⚠️  Rekordy różniące się zawartością (kolizje danych): {differing}")
-    print(f"✅ Wstawiono nowych wierszy do {main_table}: {inserted_rows}")
-    return {
-        "duplicates": duplicates,
-        "differing": differing,
-        "inserted": inserted_rows
-    }
 def list_all_file_paths(start_path, pattern):
     #Zwraca listę ścieżek do plików pasujących do wzorca (np. 'sol*.xlsx') w katalogu start_path (rekurencyjnie).
     start = Path(start_path)
@@ -408,14 +357,16 @@ def process_excel_file(file_path, import_table_name='IMPORT_DATA', debug_table_n
     create_import_table(engine, import_table_name)
     # weźmy kolumny z tabeli docelowej
     db_columns=get_column_names(engine, import_table_name)
-    print(f"🔍 kolumny w tabeli {import_table_name} : {db_columns}")
+    logger.debug(f"🔍 kolumny w tabeli {import_table_name} : {db_columns}")
 
     summary_df = summarize_dataframe(df,db_columns)
-    summary_df.to_csv("/media/ramdisk/summary.csv", index=False, encoding="utf-8")
-    print(f"summary zapisano do pliku /media/ramdisk/summary.csv")
+    if logger.isEnabledFor(logging.DEBUG):
 
-    df.to_csv("/media/ramdisk/analiza.csv", index=False, encoding="utf-8")
-    print("📊 Zapisano dane do pliku /media/ramdisk/analiza.csv")
+        summary_df.to_csv("/media/ramdisk/summary.csv", index=False, encoding="utf-8")
+        logger.debug(f"summary zapisano do pliku /media/ramdisk/summary.csv")
+
+        df.to_csv("/media/ramdisk/analiza.csv", index=False, encoding="utf-8")
+        logger.debug("📊 Zapisano dane do pliku /media/ramdisk/analiza.csv")
     if debug_table_name!='':
         df.to_sql(debug_table_name, con=engine, if_exists='append', index=False)
         print(f"📤 Zaimportowano {len(df)} rekordów do tabeli {debug_table_name}")
@@ -429,12 +380,12 @@ def main():
     # Główna funkcja do przetwarzania plików Excel
     all_files = list_all_file_paths(config.EXTRACTED_TEMP_DIR, "solarmanpv*.xlsx")
     # all_files=list_all_file_paths("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/", "sol*.xlsx")
-    print(f"Znaleziono {len(all_files)}  plików  w {config.EXTRACTED_TEMP_DIR}sol*.xlsx :")
-    print("\n".join(all_files))
+    logger.info(f"Znaleziono {len(all_files)}  plików  w {config.EXTRACTED_TEMP_DIR}sol*.xlsx :")
+    if logger.isEnabledFor(logging.DEBUG):
+        print("\n".join(all_files))
     for file in all_files:
-        print(f"Przetwarzanie pliku: {file}")
+        logger.info(f"Przetwarzanie pliku: {file}")
         process_excel_file(file, import_table_name='IMPORT_DATA', debug_table_name='')
-        print("--------------------------------------------------")
     logger.info("process_excel_file completed for all files.")
 
 if __name__  == "__main__":
