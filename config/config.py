@@ -38,3 +38,27 @@ DAILY_PLOT_FILE        = PLOTS_DIR / f"production_{TODAY}.png"
 # Ustawienia analizy (opcjonalne – stałe konfiguracyjne)
 THRESHOLD_ANOMALY_KW   = 0.5
 PLOT_RESOLUTION_DPI    = 150
+
+def _load_devices():
+    devices = {}
+    with open(DEVICES_LIST_FILE, "r", encoding="utf-8") as file:
+        next(file)  # pomija nagłówek
+        for i, line in enumerate(file, start=1):
+            device_param = line.strip().split("\t")[:6]
+            if len(device_param) != 6:
+                logger.warning(f"Wiersz {i} ma niewłaściwą liczbę elementów: {device_param}")
+                continue
+
+            deviceName, deviceId, deviceSn, parentSn, system, admin = device_param
+            devices[deviceSn] = {
+                "sn" : deviceSn,
+                "name": deviceName,
+                "id": deviceId,
+                "parent_sn": parentSn,
+                "system": system,
+                "admin": admin
+            }
+    return devices
+
+# Wczytanie słownika przy imporcie modułu
+DEVICES_LIST = _load_devices()

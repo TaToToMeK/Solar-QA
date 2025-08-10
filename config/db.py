@@ -38,9 +38,9 @@ def my_check_connection(engine):
     try:
         with engine.connect() as connection:
             result = connection.execute(text("SELECT 1"))
-            print("✅ Połączenie z bazą działa!")
-            print("Wynik testowego zapytania:", result.scalar())
+            logger.debug("Połączenie z bazą działa!")
+            logger.debug("Wynik testowego zapytania:{result.scalar()}")
             return True
     except Exception as e:
-        print(f"❌ Błąd połączenia: {e}")
+        logger.critical(f"Błąd połączenia: {e}")
         return False
