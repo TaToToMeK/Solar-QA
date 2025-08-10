@@ -17,6 +17,7 @@ __pycache__/
 # Wirtualne środowisko
 venv/
 .venv/
+.idea/
 
 # Pliki IDE
 *.swp

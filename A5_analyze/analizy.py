@@ -1,8 +1,8 @@
 from logging import DEBUG
-
 from config.db import connect_db
 from config.db import get_engine
 from config import config
+from config.config import DEVICES_LIST
 from sqlalchemy import text
 import pandas as pd
 from datetime import datetime, timedelta
@@ -11,16 +11,24 @@ import matplotlib.dates as mdates
 import numpy as np
 import logging
 logging.basicConfig(
-    level=logging.INFO,  # lub DEBUG, WARNING, ERROR, CRITICAL
+    level=logging.WARNING,
     format='%(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("analizy")
+logger.setLevel(logging.INFO)    # lub DEBUG, INFO, WARNING, ERROR, CRITICAL
+def get_device_name(sn):
+    """
+    Zwraca nazwę urządzenia na podstawie jego SN.
+    Jeśli SN nie jest w DEVICES_LIST, zwraca 'Unknown Device'.
+    """
+    if sn in DEVICES_LIST:
+        device_name=DEVICES_LIST[sn]['name']
+    else:
+        device_name='Unknown Device'
+    return device_name
 
-def analyze_instalations(engine):
-    print("Pobranie statystyk STATS_N_DAYS  z bazy danych")
-    df_coeff = pd.read_sql("SELECT sn, coefficient FROM V_STATS_N_DAYS", engine)
-    return df_coeff
+
 def load_db_data(engine, date_str: str) -> pd.DataFrame:
     print (f"\nPobieranie danych z bazy danych dla dnia: {date_str}")
     """
@@ -56,6 +64,16 @@ def x(group, idx):
     else:
         print (f"x index idx poza zakresem")
     return False
+def normalize_kW(resampled,timeprobe:str,coeff)-> pd.DataFrame:
+    if len(resampled) < 2:
+        return resampled  # Nie ma różnicy do obliczenia
+    kW_values = [0]  # Pierwsza wartość różnicy jest zerowa
+    for i in range(1, len(resampled)):
+        dY = max(0,resampled[i] - resampled[i - 1])  # obsługa case typu sn#069 2025-07-05 21:10
+        kW = dY / timeprobe_to_hours(timeprobe)  # Przekształcamy różnicę na kW
+        norm_kW=kW/coeff
+        kW_values.append(norm_kW)
+    return kW_values
 def y(group, idx):
     return group.iloc[idx]['daily_production_active_kwh_'] if idx < len(group) else 0
 def interpolate_value(tick, x1, y1, x2, y2):
@@ -100,16 +118,43 @@ def resample_sn(group, full_index, start_raw, end_raw):
 def timeprobe_to_hours(timeprobe: str) -> float:
     # Konwertuje string np. '15min', '1H', '90s' na liczbę godzin (float).
     return pd.to_timedelta(timeprobe).total_seconds() / 3600
-def normalize_kW(resampled,timeprobe:str,coeff)-> pd.DataFrame:    #    Oblicza różnicę między kolejnymi wartościami w resamplowanym DataFrame.
-    if len(resampled) < 2:
-        return resampled  # Nie ma różnicy do obliczenia
-    kW_values = [0]  # Pierwsza wartość różnicy jest zerowa
-    for i in range(1, len(resampled)):
-        dY = max(0,resampled[i] - resampled[i - 1])  # obsługa case typu sn#069 2025-07-05 21:10
-        kW = dY / timeprobe_to_hours(timeprobe)  # Przekształcamy różnicę na kW
-        norm_kW=kW/coeff
-        kW_values.append(norm_kW)
-    return kW_values
+def find_timespan_to_coeff(given_date: str, days_span: int):
+    given_dt = datetime.strptime(given_date, "%Y-%m-%d")
+    yesterday = datetime.now() - timedelta(days=1)
+    date_end = min(yesterday, given_dt + timedelta(days=days_span // 2))
+    date_start = date_end - timedelta(days=days_span)
+    logger.info(f"find_timespan_to_coeff: given_date={given_date}, days_span={days_span}, date_start={date_start}, date_end={date_end}")
+    return date_start.strftime("%Y-%m-%d"), date_end.strftime("%Y-%m-%d")
+def get_df_coeff(date_str):
+    engine=get_engine()
+    date_start, date_end = find_timespan_to_coeff(date_str, 20)
+    print(f"date_start : {date_start} \ndate_end : {date_end}")
+    sql_coefficient = f"""
+    SELECT
+    sn,
+    MAX(CASE WHEN DATE(system_time) <= '{date_end}' THEN cumulative_production_active_kwh_ END) -
+    MIN(CASE WHEN DATE(system_time) >= '{date_start}' THEN cumulative_production_active_kwh_ END) AS sn_energy,
+    (       
+        (
+            MAX(CASE WHEN DATE(system_time) <= '{date_end}' THEN cumulative_production_active_kwh_ END) -
+            MIN(CASE WHEN DATE(system_time) >= '{date_start}' THEN cumulative_production_active_kwh_ END)
+        ) / SUM(
+            MAX(CASE WHEN DATE(system_time) <= '{date_end}' THEN cumulative_production_active_kwh_ END) -
+            MIN(CASE WHEN DATE(system_time) >= '{date_start}' THEN cumulative_production_active_kwh_ END)
+        ) OVER ()
+    ) AS coefficient,
+    MIN(CASE WHEN DATE(system_time) >= '{date_start}' THEN system_time END) AS min_system_time,
+    MAX(CASE WHEN DATE(system_time) <= '{date_end}' THEN system_time END) AS max_system_time
+    FROM SOLARMAN_DATA
+    WHERE system_time>'2000-01-01'
+    GROUP BY sn
+    ORDER BY sn;
+    """
+    if logger.isEnabledFor(logging.DEBUG):
+        print(sql_coefficient)
+    df_coeff = pd.read_sql(sql_coefficient, engine)
+
+    return df_coeff
 def get_coeff_for_sn(df_coeff, sn):
     return df_coeff[df_coeff['sn'] == sn]['coefficient'].values[0] if not df_coeff[df_coeff['sn'] == sn].empty else 1
 def interpolate_at(df, t):
@@ -186,8 +231,9 @@ def interpolate_energy_linear_grid(df_db_data: pd.DataFrame, df_coeff, date_str,
 
     # Iteracja po grupach sn
     for sn, group in df_db_data.groupby('sn'):
+        sn_name=get_device_name(sn)
         # utwórz unormowany całościowy df_db_data dla wszystkich instalacji
-        logger.info(f"Przetwarzanie sn: {sn}, liczba punktów: {len(group)}")
+        logger.info(f"Przetwarzanie sn: {sn}, sn_name : {sn_name}, liczba punktów: {len(group)}")
         # if sn != 'SS3ES125P38069':      continue #  odkomentuj do testów
         # print (group)
         sn_resampled=resample_sn (group, full_index, start_raw, end_raw)
@@ -202,7 +248,8 @@ def interpolate_energy_linear_grid(df_db_data: pd.DataFrame, df_coeff, date_str,
     for sn, group in df_db_data.groupby('sn'):
         group_sn = df_db_data[df_db_data['sn'] == sn].reset_index(drop=True)
         logger.info(f"Analiza instalacji SN: {sn} z {len(group_sn)} punktami  w dniu {date_str}")
-        df_power=analyze_sn(sn, get_coeff_for_sn(df_coeff, sn), group_sn, df_all_sn_kW, full_index,timeprobe, date_str)
+    #    df_power=analyze_sn(sn, get_coeff_for_sn(df_coeff, sn), group_sn, df_all_sn_kW, full_index,timeprobe, date_str)
+    #    chwilowo!!!!
 
     df_all_sn_kW['median_kW'] = df_all_sn_kW.median(axis=1, skipna=True)
     plot_all_with_median(df_all_sn_kW, date_str, save_path=f"{config.PLOTS_DIR}/median_{date_str}.png")
@@ -276,7 +323,6 @@ def df_to_db(df: pd.DataFrame, engine, table_name: str, sn_value: str):
         connection.execute(text(sql_insert))
         connection.execute(text(sql_drop))
 
-
 def analyze_sn(sn, coeff, group, df_all_sn_kW,full_index,timeprobe:str, date_str: str) -> None:
     # sn - identyfikator instalacji
     # coeff - współczynnik dla instalacji
@@ -291,7 +337,6 @@ def analyze_sn(sn, coeff, group, df_all_sn_kW,full_index,timeprobe:str, date_str
 #        'first_normalized': df_mediana_bez_sn.values,
         'expected': df_mediana_bez_sn.values * coeff
     }, index=full_index)
-    #plot_all_power_series(df_expected_profile, sn, date_str) # sam expected power profile
 
     rows = []
     for i in range(1, len(group)):
@@ -320,18 +365,17 @@ def analyze_sn(sn, coeff, group, df_all_sn_kW,full_index,timeprobe:str, date_str
             'difference_power_kW': actual_power_kW-expected_power_kW
         })
 
+    # Utwórz nowy DataFrame z wyników
+    df_power = pd.DataFrame(rows).set_index('system_time')
+
     if logger.isEnabledFor(logging.DEBUG):
         # zapisz expected profile do pliku
         df_expected_profile.to_excel(f"{config.TMP_DIR}/expected_profile_{sn}_{date_str}.xlsx", index=True)
-        plot_all_power_series(df_expected_profile, sn, date_str)
         logger.info(f"df_power.index: {type(df_power.index)}, {df_power.index.dtype}, {df_power.index.min()} - {df_power.index.max()}")
         logger.info(f"df_power.dtypes:\n{df_power.dtypes}")
-
-    # Utwórz nowy DataFrame z wyników
-    df_power = pd.DataFrame(rows).set_index('system_time')
-    df_power
-    #print (df_power)
-    #plot_all_power_series(df_power, sn, date_str)
+        #print (df_power)
+        # plot_all_power_series(df_expected_profile, sn, date_str) # sam expected power profile
+        plot_all_power_series(df_power, sn, date_str) # Porównanie profilu actual z expected i różnica
 
     # Zapisz df_power  w DB w nowej tabeli tymczasowej
     table_name="PV_POWER_ANALYSIS"
@@ -372,34 +416,34 @@ def plot_all_power_series(df_all, sn, date_str):
     df_all = df_all.select_dtypes(include=[np.number])
     df_all = df_all.dropna(how='all')
     if df_all.empty:
-        print("⚠️ Brak danych do wykresu.")
+        logger.warning("Brak danych do wykresu.")
         return
 
     # Wykres
     plt.figure(figsize=(12, 5))
     for col in df_all.columns:
-        plt.plot(df_all.index, df_all[col], label=col, marker = 'o', markersize = 1,linewidth=1)
 
+        plt.plot(df_all.index, df_all[col], label=col, marker = 'o', markersize = 1,linewidth=1)
+    device_name=get_device_name(sn)
     plt.xlabel("Czas")
     plt.ylabel("Moc [kW]")
-    plt.title("Porównanie instalacji PV "+sn+" w dniu " + date_str)
-    plt.legend(title="SN")
+    plt.title(f"{sn} - analiza w dniu {date_str}")
+    plt.legend(title=device_name)
     plt.grid(True)
     ax = plt.gca()
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
-
     try:
         plt.tight_layout()
     except Exception as e:
         print("⚠️ tight_layout() error:", e)
-
     plt.show()
 def plot_all_with_median(df_all,date_str,save_path=None):
     plt.figure(figsize=(12, 5))
     # Rysuj wszystkie kolumny oprócz mediany
     for col in df_all.columns:
+        sn_name=get_device_name(col)
         if col != 'median_kW':
-            plt.plot(df_all.index, df_all[col], label=col, linewidth=1, alpha=0.7)
+            plt.plot(df_all.index, df_all[col], label=sn_name, linewidth=1, alpha=0.7)
 
     # Mediana — na końcu, grubszą linią
     plt.plot(df_all.index, df_all['median_kW'],
@@ -407,7 +451,7 @@ def plot_all_with_median(df_all,date_str,save_path=None):
 
     plt.xlabel("Czas")
     plt.ylabel("Moc unormowana  [kW/kW]")
-    plt.title("Moc w dniu "+date_str)
+    plt.title("Profil mocy w dniu "+date_str)
     plt.legend()
     plt.grid(True)
     ax = plt.gca()
@@ -421,16 +465,16 @@ def plot_all_with_median(df_all,date_str,save_path=None):
         logger.info(f"Wykres zapisano do {save_path}")
     else:
         plt.show()
-def analyze_day(engine,df_coeff,date_str):
-    global db_data, df_interpolated
+def analyze_day(engine,date_str):
+    df_coeff=get_df_coeff(date_str)
+    #global db_data, df_interpolated
     db_data = load_db_data(engine, date_str)
     logger.debug("Dane z bazy danych dla dnia:"+ date_str)
     logger.debug(f"Liczba wierszy: {len(db_data)}")
     logger.debug(db_data.head(10))
-    df_interpolated = interpolate_energy_linear_grid(db_data, df_coeff, date_str,timeprobe="3min")
+    df_interpolated = interpolate_energy_linear_grid(db_data, df_coeff, date_str,timeprobe="2min")
     logger.info(f"Interpolacja energii dla dnia: {date_str}")
     logger.info(f"Liczba wierszy po interpolacji:{len(df_interpolated)}")
-
 
     if logger.isEnabledFor(level=DEBUG):
         db_data.to_excel("/media/ramdisk/db_data.xlsx", index=False)
@@ -446,11 +490,10 @@ def main():
     # ==========================
     engine = connect_db()
     # print (df_coeff.head(10))
-
-    df_coeff = analyze_instalations(engine)
-    #reference_cases = ["2025-04-25", "2025-05-14", "2025-05-22", "2025-05-25", "2025-06-05", "2025-07-02", "2025-07-05","2025-07-06", "2025-07-10", "2025-07-11", "2025-07-14", "2025-07-11"]
+    #reference_cases = ["2025-04-25", "2025-05-14", "2025-05-22", "2025-05-25", "2025-06-05", "2025-07-02", "2025-07-05","2025-07-06", "2025-07-10", "2025-07-11", "2025-07-14"]
     #reference_cases = ["2025-07-06", "2025-07-02"]
     #reference_cases = ["2025-06-30"]
+    #reference_cases = ["2025-04-12"]
     # jeśli reference_cases jest okreslone
     if 'reference_cases' in locals(): #Zmienna reference_cases jest zdefiniowana
         days = [datetime.strptime(d, "%Y-%m-%d") for d in reference_cases] # odkomentuj dla testów wybranych dni
@@ -461,11 +504,14 @@ def main():
         days = pd.date_range(start_time, end_date)
 
     # lub przeliczanie wybranego zakresu
-    #days = pd.date_range(datetime.strptime("2025-01-30", "%Y-%m-%d"), datetime.strptime("2025-06-17", "%Y-%m-%d"))
+    days = pd.date_range(datetime.strptime("2025-01-16", "%Y-%m-%d"), datetime.strptime("2025-08-08", "%Y-%m-%d"))
 
     for day in reversed(days):  # od końca
         date_str = day.strftime("%Y-%m-%d")
-        analyze_day(engine,df_coeff,date_str)
+        analyze_day(engine,date_str)
+
+
+
 
 if __name__== "__main__":
     main()
