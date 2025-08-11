@@ -75,7 +75,6 @@ def download_all_solarman_reports(startDay, endDay):
         else:
             logger.warning(f"Urządzenie {device['sn']} nie jest systemem Solarman, pomijam pobieranie raportu.")
 
-
 def pull_all_solarman(year=2025):
     for M in [8]:  # Miesiące od 1 do 12
         first_day = f"{year}-{M:02d}-01"

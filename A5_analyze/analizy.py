@@ -30,7 +30,7 @@ def get_device_name(sn):
 
 
 def load_db_data(engine, date_str: str) -> pd.DataFrame:
-    print (f"\nPobieranie danych z bazy danych dla dnia: {date_str}")
+    logger.info(f"\nPobieranie danych z bazy danych dla dnia: {date_str}")
     """
     Pobiera dane z tabeli PVMONITOR.SOLARMAN_DATA tylko z wybranego dnia.
     Args:
@@ -128,7 +128,7 @@ def find_timespan_to_coeff(given_date: str, days_span: int):
 def get_df_coeff(date_str):
     engine=get_engine()
     date_start, date_end = find_timespan_to_coeff(date_str, 20)
-    print(f"date_start : {date_start} \ndate_end : {date_end}")
+    logger.info(f"date_start : {date_start} \ndate_end : {date_end}")
     sql_coefficient = f"""
     SELECT
     sn,
@@ -214,7 +214,7 @@ def save_df_sel_debug(df_sel: pd.DataFrame, filename="debug_integral.xlsx"):
     print(f"Zapisano dane do pliku: {filename}")
 def interpolate_energy_linear_grid(df_db_data: pd.DataFrame, df_coeff, date_str, timeprobe: str):
     # df_db_data musi zawierać kolumny 'sn', 'system_time', 'daily_production_active_kwh_'
-    print("\n=================\nInterpolacja energii na siatce czasowej:", timeprobe)
+    logger.info("Interpolacja energii na siatce czasowej: {timeprobe}")
     df_db_data = df_db_data.copy()
     df_db_data['system_time'] = pd.to_datetime(df_db_data['system_time'])
     df_db_data = df_db_data.sort_values(['sn', 'system_time'])
@@ -225,7 +225,7 @@ def interpolate_energy_linear_grid(df_db_data: pd.DataFrame, df_coeff, date_str,
     # Tworzenie równomiernej siatki co timeprobe
     full_index = pd.date_range(start=start, end=end, freq=timeprobe)
     #full_index = full_index[full_index >= start_raw]
-    print(f"start: {start}, end: {end}, len: {len(full_index)}")
+    logger.info(f"start: {start}, end: {end}, len: {len(full_index)}")
     #print (full_index)
     df_all_sn_kW=pd.DataFrame(index=full_index)
 
@@ -504,14 +504,11 @@ def main():
         days = pd.date_range(start_time, end_date)
 
     # lub przeliczanie wybranego zakresu
-    days = pd.date_range(datetime.strptime("2025-01-16", "%Y-%m-%d"), datetime.strptime("2025-08-08", "%Y-%m-%d"))
+    days = pd.date_range(datetime.strptime("2025-01-17", "%Y-%m-%d"), datetime.strptime("2025-08-11", "%Y-%m-%d"))
 
     for day in reversed(days):  # od końca
         date_str = day.strftime("%Y-%m-%d")
         analyze_day(engine,date_str)
-
-
-
 
 if __name__== "__main__":
     main()

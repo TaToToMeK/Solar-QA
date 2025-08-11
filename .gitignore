@@ -1,6 +1,7 @@
 # Pliki z danymi wrażliwymi
 .env
 .env.*
+.idea
 config/devices_secrets.json
 devices_secrets*
 
@@ -8,6 +9,7 @@ devices_secrets*
 tmp/
 temp/
 output/
+scratch/
 
 
 # Python – pliki kompilowane i cache
