@@ -67,19 +67,6 @@ def download_solarman_report(device_id, device_sn, parent_sn, start_day, end_day
 
 def download_all_solarman_reports(startDay, endDay):
     # pobiera raporty z zadanego przedziału czasowego dla wszystkich urządzeń z DEVICES_LIST_FILE i.e. devices_list.txt
-    '''with open(config.DEVICES_LIST_FILE, "r") as file:
-        next(file) #pomija nagłówek pliku
-        for i, line in enumerate(file, start=1):
-            device_param = line.strip().split("\t")[:6]
-            if len(device_param) != 6:
-                print(f"Wiersz {i} ma niewłaściwą liczbę elementów: {device_param}")
-                continue
-            deviceName,deviceId,deviceSn,parentSn,system,admin = device_param
-            logger.info(f"line={i},deviceName: {deviceName}, deviceId: {deviceId}, deviceSn: {deviceSn}, parentSn: {parentSn}, system: {system}, admin: {admin}")
-            # Pobierz raport dla każdego urządzenia
-            download_solarman_report(deviceId,deviceSn,parentSn,startDay,endDay)
-    '''
-
     for device in DEVICES_LIST.values():
         logger.info(f"Device SN: {device['sn']}, Name: {device['name']}, ID: {device['id']}, Parent SN: {device['parent_sn']}, System: {device['system']}, Admin: {device['admin']}")
         if device['system'] == 'solarman':
