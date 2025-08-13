@@ -27,8 +27,6 @@ def get_device_name(sn):
     else:
         device_name='Unknown Device'
     return device_name
-
-
 def load_db_data(engine, date_str: str) -> pd.DataFrame:
     logger.info(f"\nPobieranie danych z bazy danych dla dnia: {date_str}")
     """
@@ -255,7 +253,6 @@ def interpolate_energy_linear_grid(df_db_data: pd.DataFrame, df_coeff, date_str,
     plot_all_with_median(df_all_sn_kW, date_str, save_path=f"{config.PLOTS_DIR}/median_{date_str}.png")
     #plot_all_with_median(df_all_sn_kW, date_str)
     return df_all_sn_kW #all
-
 def df_to_db(df: pd.DataFrame, engine, table_name: str, sn_value: str):
     """
     Zapisuje DataFrame do tabeli SQL:
@@ -322,7 +319,6 @@ def df_to_db(df: pd.DataFrame, engine, table_name: str, sn_value: str):
     with engine.begin() as connection:
         connection.execute(text(sql_insert))
         connection.execute(text(sql_drop))
-
 def analyze_sn(sn, coeff, group, df_all_sn_kW,full_index,timeprobe:str, date_str: str) -> None:
     # sn - identyfikator instalacji
     # coeff - współczynnik dla instalacji
@@ -443,7 +439,7 @@ def plot_all_with_median(df_all,date_str,save_path=None):
     for col in df_all.columns:
         sn_name=get_device_name(col)
         if col != 'median_kW':
-            plt.plot(df_all.index, df_all[col], label=sn_name, linewidth=1, alpha=0.7)
+            plt.plot(df_all.index, df_all[col], label=sn_name, linewidth=2, alpha=0.7)
 
     # Mediana — na końcu, grubszą linią
     plt.plot(df_all.index, df_all['median_kW'],
@@ -491,20 +487,19 @@ def main():
     engine = connect_db()
     # print (df_coeff.head(10))
     #reference_cases = ["2025-04-25", "2025-05-14", "2025-05-22", "2025-05-25", "2025-06-05", "2025-07-02", "2025-07-05","2025-07-06", "2025-07-10", "2025-07-11", "2025-07-14"]
-    #reference_cases = ["2025-07-06", "2025-07-02"]
-    #reference_cases = ["2025-06-30"]
-    #reference_cases = ["2025-04-12"]
+    #reference_cases = ["2025-07-06", "2025-07-02","2025-06-30","2025-04-12"]
+    #reference_cases = ["2025-08-11"]
     # jeśli reference_cases jest okreslone
     if 'reference_cases' in locals(): #Zmienna reference_cases jest zdefiniowana
         days = [datetime.strptime(d, "%Y-%m-%d") for d in reference_cases] # odkomentuj dla testów wybranych dni
     else:
         today = datetime.now().strftime("%Y-%m-%d")
-        start_time = (datetime.now() - timedelta(days=300)).strftime("%Y-%m-%d")
+        start_time = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
         end_date = today
         days = pd.date_range(start_time, end_date)
 
     # lub przeliczanie wybranego zakresu
-    days = pd.date_range(datetime.strptime("2025-01-17", "%Y-%m-%d"), datetime.strptime("2025-08-11", "%Y-%m-%d"))
+    days = pd.date_range(datetime.strptime("2025-01-11", "%Y-%m-%d"), datetime.strptime("2025-06-10", "%Y-%m-%d"))
 
     for day in reversed(days):  # od końca
         date_str = day.strftime("%Y-%m-%d")
