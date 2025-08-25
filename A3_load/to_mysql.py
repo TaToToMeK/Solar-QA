@@ -208,13 +208,14 @@ def safe_insert_dataframe_to_sql(engine, df, import_table_name):
         # 2. Wybierz tylko wspólne kolumny
         common_columns = [col for col in df.columns if col in db_columns]
         if not common_columns:
-            logger.warning("Brak wspólnych kolumn do importu.")
+            logger.debug("Brak wspólnych kolumn do importu.")
             return
 
         df_subset = df[common_columns]
         # 3a Raport z czystości danych przed wstawieniem
         #print("🔍 Wiersze z błędnymi datami w system_time :", df[pd.to_datetime(df["system_time"], errors="coerce").isna()].shape[0])
-        logger.warning(f"Wiersze z błędnymi datami w system_time : {df[pd.to_datetime(df['system_time'], errors='coerce').isna()].shape[0]}")
+        if df[pd.to_datetime(df['system_time'], errors='coerce').isna()].shape[0]>0:
+            logger.debug(f"Wiersze z błędnymi datami w system_time : {df[pd.to_datetime(df['system_time'], errors='coerce').isna()].shape[0]}")
 
         for col in common_columns:
             sql_type = column_type_map[col][0]
@@ -222,19 +223,19 @@ def safe_insert_dataframe_to_sql(engine, df, import_table_name):
                 # Sprawdź, czy kolumna zawiera nieparsowalne liczby
                 failed = pd.to_numeric(df[col], errors="coerce").isna().sum()
                 if failed > 0:
-                    logger.warning(f"Wiersze z nieparsowalnymi liczbami w {col} : {failed}")
+                    logger.debug(f"Wiersze z nieparsowalnymi liczbami w {col} : {failed}")
             elif sql_type == "DATETIME":
                 # Sprawdź, czy kolumna zawiera nieparsowalne daty
                 failed = pd.to_datetime(df[col], errors="coerce").isna().sum()
                 if failed > 0:
-                    logger.warning(f"Wiersze z nieparsowalnymi datami w {col} : {failed}")
+                    logger.debug(f"Wiersze z nieparsowalnymi datami w {col} : {failed}")
         # 3. Oczyść dane do typów SQL
         df_clean = clean_dataframe_for_insert(df_subset, column_type_map)
         df_clean = clean_duplicated(df_clean)
 
         # 4. Insert do SQL
         df_clean.to_sql(import_table_name, con=engine, if_exists='append', index=False, method='multi', chunksize=1000)
-        logger.info(f" Wstawiono {len(df_clean)} rekordów do {import_table_name} (kolumny: {common_columns})")
+        logger.info(f"Wstawiono {len(df_clean)} rekordów do {import_table_name} (kolumny: {common_columns})")
 
     except exc.SQLAlchemyError as e:
         print(f"❌ Błąd przy zapisie do bazy: {e}")
@@ -328,7 +329,7 @@ def merge_import_to_main(engine, import_table="IMPORT_DATA"):
         inserted_rows = inserted_result.rowcount
     logger.debug(f"Powtórzenia na kluczu (`sn`, `system_time`, `updated_time`): {duplicates}")
     logger.debug(f"Rekordy różniące się zawartością (kolizje danych): {differing}")
-    logger.info(f"Wstawiono nowych wierszy do {main_table}: {inserted_rows}")
+    logger.notice(f"Wstawiono nowych wierszy do {main_table}: {inserted_rows}")
     return {
         "duplicates": duplicates,
         "differing": differing,
@@ -379,14 +380,13 @@ def process_excel_file(file_path, import_table_name='IMPORT_DATA', debug_table_n
 def main():
     # Główna funkcja do przetwarzania plików Excel
     all_files = list_all_file_paths(config.EXTRACTED_TEMP_DIR, "solarmanpv*.xlsx")
-    logger.info(f"Znaleziono {len(all_files)}  plików  w {config.EXTRACTED_TEMP_DIR}sol*.xlsx :")
+    logger.notice(f"Znaleziono {len(all_files)}  plików  w {config.EXTRACTED_TEMP_DIR}/sol*.xlsx :")
     if logger.isEnabledFor(logging.DEBUG):
         print("\n".join(all_files))
     for file in all_files:
         logger.info(f"Przetwarzanie pliku: {file}")
         process_excel_file(file, import_table_name='IMPORT_DATA', debug_table_name='')
-    logger.info("process_excel_file completed for all files.")
-
+    logger.notice("process_excel_file completed for all files.")
 if __name__  == "__main__":
     main()
 

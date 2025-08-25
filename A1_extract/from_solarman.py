@@ -80,7 +80,7 @@ def pull_all_solarman(year=2025):
         first_day = f"{year}-{M:02d}-01"
         last_day_num = calendar.monthrange(year, M)[1]
         last_day = f"{year}-{M:02d}-{last_day_num:02d}"
-        logger.info(f"pobieranie z zakresu czasu {first_day}  →  {last_day}")
+        logger.notice(f"pobieranie z zakresu czasu {first_day}  →  {last_day}")
         download_all_solarman_reports(first_day, last_day)
     logger.info("pull_all_solarman finished")
 
