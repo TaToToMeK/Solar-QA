@@ -40,7 +40,7 @@ def download_solarman_report(device_id, device_sn, parent_sn, start_day, end_day
     payload["parentSn"] = parent_sn
     payload["startDay"] = start_day
     payload["endDay"] = end_day
-    xls_filename = f"{config.EXTRACTED_TEMP_DIR}solarmanpv_{device_id}_{device_sn}_od_{start_day}_do_{end_day}.xlsx"
+    xls_filename = f"{config.EXTRACTED_TEMP_DIR}/solarmanpv_{device_id}_{device_sn}_od_{start_day}_do_{end_day}.xlsx"
     logger.debug(f"Pobieranie raportu Solarman: {xls_filename}")
 
     try:

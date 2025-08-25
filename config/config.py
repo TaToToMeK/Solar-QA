@@ -29,8 +29,8 @@ load_dotenv(dotenv_path=ENV_FILE)
 
 # Nazwy plików wyjściowych (dynamiczne lub statyczne)
 TODAY = date.today().strftime("%Y-%m-%d")
-EXTRACTED_TEMP_DIR= TMP_DIR / "extracted"
-EXTRACTED_ARCHIVE_DIR=TMP_DIR / "archive"
+EXTRACTED_TEMP_DIR= TMP_DIR
+EXTRACTED_ARCHIVE_DIR=TMP_DIR
 
 ANOMALY_REPORT_FILE    = REPORTS_DIR / f"anomalies_{TODAY}.pdf"
 DAILY_PLOT_FILE        = PLOTS_DIR / f"production_{TODAY}.png"
