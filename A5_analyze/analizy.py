@@ -494,12 +494,12 @@ def main():
         days = [datetime.strptime(d, "%Y-%m-%d") for d in reference_cases] # odkomentuj dla testów wybranych dni
     else:
         today = datetime.now().strftime("%Y-%m-%d")
-        start_time = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+        start_time = (datetime.now() - timedelta(days=2)).strftime("%Y-%m-%d")
         end_date = today
         days = pd.date_range(start_time, end_date)
 
     # lub przeliczanie wybranego zakresu
-    days = pd.date_range(datetime.strptime("2025-01-11", "%Y-%m-%d"), datetime.strptime("2025-06-10", "%Y-%m-%d"))
+    #days = pd.date_range(datetime.strptime("2025-01-11", "%Y-%m-%d"), datetime.strptime("2025-06-10", "%Y-%m-%d"))
 
     for day in reversed(days):  # od końca
         date_str = day.strftime("%Y-%m-%d")

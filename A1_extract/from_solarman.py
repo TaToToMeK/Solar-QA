@@ -41,7 +41,7 @@ def download_solarman_report(device_id, device_sn, parent_sn, start_day, end_day
     payload["startDay"] = start_day
     payload["endDay"] = end_day
     xls_filename = f"{config.EXTRACTED_TEMP_DIR}solarmanpv_{device_id}_{device_sn}_od_{start_day}_do_{end_day}.xlsx"
-    logger.info(f"Pobieranie raportu Solarman: {xls_filename}")
+    logger.debug(f"Pobieranie raportu Solarman: {xls_filename}")
 
     try:
         response = requests.post(config.SOLARMAN_URL, headers=headers, json=payload)
@@ -57,7 +57,7 @@ def download_solarman_report(device_id, device_sn, parent_sn, start_day, end_day
             # else: print("Plik już rozpakowany lub nie wymaga dekompresji.")
             with open(xls_filename, "wb") as f:
                 f.write(content)
-            logger.info(f"Plik został zapisany jako {xls_filename}")
+            logger.debug(f"Plik został zapisany jako {xls_filename}")
         else:
             error_string="Błąd: "+ str(response.status_code)+" "+ response.text[:500]
             logger.error(error_string)
@@ -70,7 +70,7 @@ def download_all_solarman_reports(startDay, endDay):
     for device in DEVICES_LIST.values():
         logger.info(f"Device SN: {device['sn']}, Name: {device['name']}, ID: {device['id']}, Parent SN: {device['parent_sn']}, System: {device['system']}, Admin: {device['admin']}")
         if device['system'] == 'solarman':
-            logger.info(f"download_solarman_report({device['id']},{device['sn']},{device['parent_sn']},startDay,endDay)")
+            logger.debug(f"download_solarman_report({device['id']},{device['sn']},{device['parent_sn']},startDay,endDay)")
             download_solarman_report(device['id'],device['sn'],device['parent_sn'],startDay,endDay)
         else:
             logger.warning(f"Urządzenie {device['sn']} nie jest systemem Solarman, pomijam pobieranie raportu.")
