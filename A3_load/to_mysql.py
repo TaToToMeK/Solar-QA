@@ -362,11 +362,11 @@ def process_excel_file(file_path, import_table_name='IMPORT_DATA', debug_table_n
     summary_df = summarize_dataframe(df,db_columns)
     if logger.isEnabledFor(logging.DEBUG):
 
-        summary_df.to_csv("/media/ramdisk/summary.csv", index=False, encoding="utf-8")
-        logger.debug(f"summary zapisano do pliku /media/ramdisk/summary.csv")
+        summary_df.to_csv(f"{config.EXTRACTED_TEMP_DIR}/summary.csv", index=False, encoding="utf-8")
+        logger.debug(f"summary zapisano do pliku {config.EXTRACTED_TEMP_DIR}/summary.csv")
 
-        df.to_csv("/media/ramdisk/analiza.csv", index=False, encoding="utf-8")
-        logger.debug("📊 Zapisano dane do pliku /media/ramdisk/analiza.csv")
+        df.to_csv(f"{config.EXTRACTED_TEMP_DIR}//analiza.csv", index=False, encoding="utf-8")
+        logger.debug(f"📊 Zapisano dane do pliku {config.EXTRACTED_TEMP_DIR}/analiza.csv")
     if debug_table_name!='':
         df.to_sql(debug_table_name, con=engine, if_exists='append', index=False)
         print(f"📤 Zaimportowano {len(df)} rekordów do tabeli {debug_table_name}")
@@ -379,7 +379,6 @@ def process_excel_file(file_path, import_table_name='IMPORT_DATA', debug_table_n
 def main():
     # Główna funkcja do przetwarzania plików Excel
     all_files = list_all_file_paths(config.EXTRACTED_TEMP_DIR, "solarmanpv*.xlsx")
-    # all_files=list_all_file_paths("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/", "sol*.xlsx")
     logger.info(f"Znaleziono {len(all_files)}  plików  w {config.EXTRACTED_TEMP_DIR}sol*.xlsx :")
     if logger.isEnabledFor(logging.DEBUG):
         print("\n".join(all_files))
@@ -391,21 +390,5 @@ def main():
 if __name__  == "__main__":
     main()
 
-'''
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_229763641_SS3ES125P38069_od_2025-07-01_do_2025-07-31.xlsx")
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_229763641_SS3ES125P38069_od_2025-01-01_do_2025-01-31.xlsx")
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/SolarmanSampleSize5.xlsx")
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/solarmanpv_230709814_SS3ES150NAT230_short.xlsx")
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/SolarmanSample.xlsx")
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_230709814_SS3ES150NAT230_od_2025-02-01_do_2025-02-28.xlsx")
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_229763641_SS3ES125P38069_od_2025-01-01_do_2025-01-31.xlsx")
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_229763641_SS3ES125P38069_od_2025-01-01_do_2025-01-31.xlsx")
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_229763641_SS3ES125P38069_od_2025-02-01_do_2025-02-28.xlsx")
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_230731855_SS1ES122M5G764_od_2025-02-01_do_2025-02-28.xlsx")
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_230731624_SS1ES120P4U121_od_2025-02-01_do_2025-02-28.xlsx")
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_230731624_SS1ES120P4U121_od_2025-01-01_do_2025-01-31.xlsx")
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_230731855_SS1ES122M5G764_od_2025-01-01_do_2025-01-31.xlsx")
-process_excel_file("/home/astek/Dokumenty/2025.Energetyka/PV-MONITOR/PUK-Bielany/solarmanpv_229763641_SS3ES125P38069_od_2025-01-01_do_2025-01-31.xlsx")
-'''
 
 
