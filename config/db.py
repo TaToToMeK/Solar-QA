@@ -44,3 +44,18 @@ def my_check_connection(engine):
     except Exception as e:
         logger.critical(f"Błąd połączenia: {e}")
         return False
+
+def get_last_update_for_instalation(sn):
+    engine=connect_db()
+    db_maintable=os.getenv("DB_MAINTABLE")
+    try:
+        with engine.connect() as connection:
+            query = text(f'SELECT DATE(MAX(system_time)) as system_time FROM {db_maintable} WHERE sn="{sn}";')
+            result = connection.execute(query).fetchone()[0]
+
+    except exc.SQLAlchemyError as e:
+        logger.error(f"Błąd podczas pobierania dat z tabeli {db_maintable}: {e}")
+        result=None
+    return result
+
+

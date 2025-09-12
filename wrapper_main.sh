@@ -8,7 +8,7 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 echo $DIR
 cd $DIR
 source .venv/bin/activate
-python main.py --log-level INFO
+python main.py --log-level NOTICE
 date
 echo "Closing main.py wrapper script..."
 echo "----------------------------------------"

@@ -341,6 +341,7 @@ def list_all_file_paths(start_path, pattern):
     start = Path(start_path)
     return [str(p) for p in start.rglob(pattern) if p.is_file()]
 def process_excel_file(file_path, import_table_name='IMPORT_DATA', debug_table_name=''):
+    logger.debug(f"process_excel_file({file_path}, import_table_name='IMPORT_DATA', debug_table_name='')")
     df = pd.read_excel(file_path)
     file_columns = df.columns.tolist()
     norm_columns = [normalize_column_name(col) for col in file_columns]
@@ -377,12 +378,15 @@ def process_excel_file(file_path, import_table_name='IMPORT_DATA', debug_table_n
     merge_import_to_main(engine,import_table_name)
     return ("process_excel_file - ended")
 
-def main():
+def main(xls_files):
     # Główna funkcja do przetwarzania plików Excel
-    all_files = list_all_file_paths(config.EXTRACTED_TEMP_DIR, "solarmanpv*.xlsx")
-    logger.notice(f"Znaleziono {len(all_files)}  plików  w {config.EXTRACTED_TEMP_DIR}/sol*.xlsx :")
+    #all_files = list_all_file_paths(config.EXTRACTED_TEMP_DIR, "solarmanpv*.xlsx")
+    #logger.notice(f"Znaleziono {len(all_files)}  plików  w {config.EXTRACTED_TEMP_DIR}/sol*.xlsx :")
+    all_files = list(xls_files)
+
     if logger.isEnabledFor(logging.DEBUG):
-        print("\n".join(all_files))
+        print(  "---- -- -- -- -- -- | DEBUG   | ",end="")
+        print("\n---- -- -- -- -- -- | DEBUG   | ".join(all_files))
     for file in all_files:
         logger.info(f"Przetwarzanie pliku: {file}")
         process_excel_file(file, import_table_name='IMPORT_DATA', debug_table_name='')

@@ -1,6 +1,8 @@
 from config import config
 from config.config import DEVICES_LIST
-from config.db import connect_db
+from config.db import connect_db, get_last_update_for_instalation
+from datetime import datetime, timedelta
+from sqlalchemy import text
 import calendar
 import requests
 import json
@@ -63,17 +65,27 @@ def download_solarman_report(device_id, device_sn, parent_sn, start_day, end_day
             logger.error(error_string)
     except Exception as e:
         logger.error("Wystąpił błąd podczas pobierania raportu:", str(e))
+    return xls_filename
 
 
-def download_all_solarman_reports(startDay, endDay):
+def download_all_solarman_reports(start_Day, end_day):
     # pobiera raporty z zadanego przedziału czasowego dla wszystkich urządzeń z DEVICES_LIST_FILE i.e. devices_list.txt
+    xls_list=[]
     for device in DEVICES_LIST.values():
         logger.info(f"Device SN: {device['sn']}, Name: {device['name']}, ID: {device['id']}, Parent SN: {device['parent_sn']}, System: {device['system']}, Admin: {device['admin']}")
         if device['system'] == 'solarman':
+            start_day = get_last_update_for_instalation(device['sn'])
+            if start_day is None:
+                start_day = (datetime.now() - timedelta(days=200))
+            end_day = (start_day + timedelta(days=15)).strftime("%Y-%m-%d")
             logger.debug(f"download_solarman_report({device['id']},{device['sn']},{device['parent_sn']},startDay,endDay)")
-            download_solarman_report(device['id'],device['sn'],device['parent_sn'],startDay,endDay)
+            start_day = start_day.strftime("%Y-%m-%d")
+            xls_file=download_solarman_report(device['id'],device['sn'],device['parent_sn'],start_day,end_day)
+            logger.info(f"Pobrano plik: {xls_file}")
+            xls_list.append(xls_file)
         else:
             logger.warning(f"Urządzenie {device['sn']} nie jest systemem Solarman, pomijam pobieranie raportu.")
+    return xls_list
 
 def pull_all_solarman(year=2025):
     for M in [8]:  # Miesiące od 1 do 12
@@ -84,23 +96,14 @@ def pull_all_solarman(year=2025):
         download_all_solarman_reports(first_day, last_day)
     logger.info("pull_all_solarman finished")
 
-def pull_last_solarman():
-    # Pobieranie ostatnich raportów Solarman dla wszystkich urządzeń od ostaniej aktualizacji
-    # sprawdzenie ostatniego dnia w bazie danych dla każdej instalacji
-    engine = connect_db()
-    with engine.connect() as connection:
-        result = connection.execute("SELECT device_id,sn,parent_sn, MAX(date) FROM solarman_reports GROUP BY sn")
-        for row in result:
-            device_id,sn,parent_sn, last_date = row
-            print(f"Urządzenie {device_id} ma ostatni raport z dnia {last_date}")
-            today= calendar.datetime.date.today()
-            # Pobierz raport od ostatniego dnia w bazie do dzisiaj
-            download_solarman_report(device_id, device_id, device_id, last_date, last_date)
 
 
 
 if __name__  == "__main__":
+    start_day='2025-08-31'
+    end_day='2025-09-01'
+
     print("Pobieranie raportu Solarman dla urządzenia SS3ES125P38069 ===========")
-    print ("download_solarman_report('229763641','SS3ES125P38069','2754356247', '2025-07-15', '2025-07-15')")
-    download_solarman_report('229763641','SS3ES125P38069','2754356247', '2025-07-15', '2025-07-15')
+    print (f"download_solarman_report('229763641','SS3ES125P38069','2754356247', {start_day}, {end_day})")
+    download_solarman_report('229763641','SS3ES125P38069','2754356247', None, None)
     print("Koniec ===========")
