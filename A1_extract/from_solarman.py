@@ -1,6 +1,6 @@
 from config import config
 from config.config import DEVICES_LIST
-from config.db import connect_db, get_last_update_for_instalation
+from config.db import get_last_update_for_instalation
 from datetime import datetime, timedelta
 from sqlalchemy import text
 import calendar

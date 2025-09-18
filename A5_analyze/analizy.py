@@ -12,7 +12,7 @@ import numpy as np
 import logging
 logging.basicConfig(
     level=logging.WARNING,
-    format='%(asctime)s | %(levelname)s | %(filename)s:%(lineno)d | %(message)s',
+    format="%(asctime)s | %(levelname)-7s |%(lineno)4d:%(filename)s | %(message)s",
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger = logging.getLogger("analizy")
@@ -212,7 +212,7 @@ def save_df_sel_debug(df_sel: pd.DataFrame, filename="debug_integral.xlsx"):
     print(f"Zapisano dane do pliku: {filename}")
 def interpolate_energy_linear_grid(df_db_data: pd.DataFrame, df_coeff, date_str, timeprobe: str):
     # df_db_data musi zawierać kolumny 'sn', 'system_time', 'daily_production_active_kwh_'
-    logger.info("Interpolacja energii na siatce czasowej: {timeprobe}")
+    logger.info(f"Interpolacja energii na siatce czasowej: {timeprobe}")
     df_db_data = df_db_data.copy()
     df_db_data['system_time'] = pd.to_datetime(df_db_data['system_time'])
     df_db_data = df_db_data.sort_values(['sn', 'system_time'])
@@ -467,6 +467,9 @@ def analyze_day(engine,date_str):
     db_data = load_db_data(engine, date_str)
     logger.debug("Dane z bazy danych dla dnia:"+ date_str)
     logger.debug(f"Liczba wierszy: {len(db_data)}")
+    if len(db_data)==0:
+        logger.warning(f"Brak danych w bazie dla dnia {date_str}. Pomijam analizę.")
+        return
     logger.debug(db_data.head(10))
     df_interpolated = interpolate_energy_linear_grid(db_data, df_coeff, date_str,timeprobe="2min")
     logger.info(f"Interpolacja energii dla dnia: {date_str}")
