@@ -11,4 +11,5 @@ source .venv/bin/activate
 python main.py --log-level NOTICE
 PYTHONPATH=. python A5_analyze/analizy.py --log-level NOTICE
 echo "Closing main.py wrapper script..."
+date
 echo "----------------------------------------"
