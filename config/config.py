@@ -15,9 +15,11 @@ REPORTS_DIR  = OUTPUT_DIR / "reports"
 PLOTS_DIR    = OUTPUT_DIR / "plots"
 
 # Pliki metadanych i konfiguracyjne
+ENV_FILE               = BASE_DIR / ".env"
 DEVICES_LIST_FILE      = CONFIG_DIR / "devices_list.txt"
 DEVICES_SECRETS_FILE   = CONFIG_DIR / "devices_secrets.json"
-ENV_FILE               = BASE_DIR / ".env"
+LAST_ANALYSIS_DATE_FILE= CONFIG_DIR / "last_analysis_date.txt"
+
 
 #SOLARMAN specific
 SOLARMAN_URL = "https://globalhome.solarmanpv.com/device-s/report/export"
