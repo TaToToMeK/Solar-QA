@@ -32,17 +32,18 @@ def get_engine():
     """
     if _engine is None:
         raise RuntimeError("Engine has not been initialized. Call connect_db() first.")
+
     return _engine
 
 def my_check_connection(engine):
     try:
         with engine.connect() as connection:
             result = connection.execute(text("SELECT 1"))
-            logger.debug("Połączenie z bazą działa!")
-            logger.debug("Wynik testowego zapytania:{result.scalar()}")
+            logger.debug("Połączenie z bazą działa! Wynik testowego zapytania:{result.scalar()}")
             return True
     except Exception as e:
         logger.critical(f"Błąd połączenia: {e}")
+        raise SystemExit(f"Krytyczny błąd: {e}")
         return False
 
 def get_last_update_for_instalation(sn):

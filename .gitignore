@@ -3,6 +3,7 @@
 .env.*
 .idea
 config/devices_secrets.json
+config/last_analysis_date.txt
 devices_secrets*
 
 # Katalogi tymczasowe

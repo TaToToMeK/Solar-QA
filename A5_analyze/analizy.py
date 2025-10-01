@@ -17,6 +17,37 @@ logging.basicConfig(
 )
 logger = logging.getLogger("analizy")
 logger.setLevel(logging.INFO)    # lub DEBUG, INFO, WARNING, ERROR, CRITICAL
+def save_last_analysis_date(date_str):
+    """
+    Zapisuje do pliku config.LAST_ANALYSIS_DATE_FILE datę ostatniej analizy.
+    Format pliku:
+        YYYY-MM-DD
+    Jeśli plik nie istnieje, tworzy go.
+    """
+    try:
+        with open(config.LAST_ANALYSIS_DATE_FILE, "w", encoding="utf-8") as f:
+            f.write(date_str + "\n")
+        logger.info(f"Zapisano datę ostatniej analizy: {date_str} w pliku {config.LAST_ANALYSIS_DATE_FILE}.")
+    except Exception as e:
+        logger.error(f"Błąd podczas zapisywania daty analizy: {e}")
+
+def get_last_analysis_date():
+    """
+    Odczytuje z pliku config.LAST_ANALYSIS_DATE_FILE datę ostatniej analizy.
+    Format pliku:
+        YYYY-MM-DD
+    Zwraca datę jako string 'YYYY-MM-DD' lub None jeśli plik nie istnieje.
+    """
+    try:
+        with open(config.LAST_ANALYSIS_DATE_FILE, "r", encoding="utf-8") as f:
+            date_str = f.readline().strip()
+            return date_str
+    except FileNotFoundError:
+        logger.warning(f"Plik {config.LAST_ANALYSIS_DATE_FILE} nie istnieje.")
+    except Exception as e:
+        logger.error(f"Błąd podczas odczytu daty analizy: {e}")
+    return "2025-09-29"
+
 def get_device_name(sn):
     """
     Zwraca nazwę urządzenia na podstawie jego SN.
@@ -28,7 +59,7 @@ def get_device_name(sn):
         device_name='Unknown Device'
     return device_name
 def load_db_data(engine, date_str: str) -> pd.DataFrame:
-    logger.info(f"\nPobieranie danych z bazy danych dla dnia: {date_str}")
+    logger.info(f"Pobieranie danych z bazy danych dla dnia: {date_str}")
     """
     Pobiera dane z tabeli PVMONITOR.SOLARMAN_DATA tylko z wybranego dnia.
     Args:
@@ -126,7 +157,7 @@ def find_timespan_to_coeff(given_date: str, days_span: int):
 def get_df_coeff(date_str):
     engine=get_engine()
     date_start, date_end = find_timespan_to_coeff(date_str, 20)
-    logger.info(f"date_start : {date_start} \ndate_end : {date_end}")
+    logger.info(f"date_start : {date_start} date_end : {date_end}")
     sql_coefficient = f"""
     SELECT
     sn,
@@ -372,12 +403,10 @@ def analyze_sn(sn, coeff, group, df_all_sn_kW,full_index,timeprobe:str, date_str
         #print (df_power)
         # plot_all_power_series(df_expected_profile, sn, date_str) # sam expected power profile
         plot_all_power_series(df_power, sn, date_str) # Porównanie profilu actual z expected i różnica
-
     # Zapisz df_power  w DB w nowej tabeli tymczasowej
     table_name="PV_POWER_ANALYSIS"
     df_to_db(df_power, get_engine(), table_name=table_name, sn_value=sn)
     logger.info(f"do tabeli {table_name} dopisano dane dla SN: {sn}, liczba wierszy: {len(df_power)}, data range: {df_power.index.min()} - {df_power.index.max()}")
-
     return df_power
 def plot_interpolation_vs_original(result: pd.DataFrame, group: pd.DataFrame) -> None:
     """
@@ -474,12 +503,12 @@ def analyze_day(engine,date_str):
     df_interpolated = interpolate_energy_linear_grid(db_data, df_coeff, date_str,timeprobe="2min")
     logger.info(f"Interpolacja energii dla dnia: {date_str}")
     logger.info(f"Liczba wierszy po interpolacji:{len(df_interpolated)}")
-
     if logger.isEnabledFor(level=DEBUG):
         db_data.to_excel("/media/ramdisk/db_data.xlsx", index=False)
         logger.info("Dane z bazy danych zostały zapisane do pliku db_data.xlsx")
         df_interpolated.to_excel("/media/ramdisk/interpolated_energy.xlsx", index=False)
         logger.info("Dane zostały zapisane do pliku interpolated_energy.xlsx")
+    save_last_analysis_date(date_str)
 
 def main():
     # ==========================
@@ -497,14 +526,15 @@ def main():
         days = [datetime.strptime(d, "%Y-%m-%d") for d in reference_cases] # odkomentuj dla testów wybranych dni
     else:
         today = datetime.now().strftime("%Y-%m-%d")
-        start_time = (datetime.now() - timedelta(days=2)).strftime("%Y-%m-%d")
+        start_time = (datetime.now() - timedelta(days=20)).strftime("%Y-%m-%d")
+        start_time = get_last_analysis_date()
         end_date = today
         days = pd.date_range(start_time, end_date)
 
     # lub przeliczanie wybranego zakresu
     #days = pd.date_range(datetime.strptime("2025-01-11", "%Y-%m-%d"), datetime.strptime("2025-06-10", "%Y-%m-%d"))
 
-    for day in reversed(days):  # od końca
+    for day in days:
         date_str = day.strftime("%Y-%m-%d")
         analyze_day(engine,date_str)
 
