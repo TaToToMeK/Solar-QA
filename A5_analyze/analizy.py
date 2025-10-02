@@ -157,7 +157,7 @@ def find_timespan_to_coeff(given_date: str, days_span: int):
 def get_df_coeff(date_str):
     engine=get_engine()
     date_start, date_end = find_timespan_to_coeff(date_str, 20)
-    logger.info(f"date_start : {date_start} date_end : {date_end}")
+    logger.info(f"find_timespan_to_coeff({date_str}) -> date_start : {date_start} date_end : {date_end}")
     sql_coefficient = f"""
     SELECT
     sn,

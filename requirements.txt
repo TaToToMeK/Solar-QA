@@ -1,7 +1,9 @@
 Brotli==1.1.0
 certifi==2025.7.14
+cffi==1.17.1
 charset-normalizer==3.4.2
 contourpy==1.1.1
+cryptography==46.0.2
 cycler==0.12.1
 Deprecated==1.2.18
 et_xmlfile==2.0.0
@@ -24,6 +26,7 @@ packaging==25.0
 pandas==2.0.3
 pillow==10.4.0
 pluggy==1.5.0
+pycparser==2.23
 PyMySQL==1.1.1
 pyparsing==3.1.4
 pytest==8.3.5

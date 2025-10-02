@@ -43,7 +43,7 @@ def my_check_connection(engine):
             return True
     except Exception as e:
         logger.critical(f"Błąd połączenia: {e}")
-        raise SystemExit(f"Krytyczny błąd: {e}")
+        raise SystemExit("Krytyczny błąd: {e}")
         return False
 
 def get_last_update_for_instalation(sn):
