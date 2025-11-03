@@ -63,8 +63,10 @@ def download_solarman_report(device_id, device_sn, parent_sn, start_day, end_day
         else:
             error_string="Błąd: "+ str(response.status_code)+" "+ response.text[:500]
             logger.error(error_string)
+            xls_filename=None
     except Exception as e:
         logger.error("Wystąpił błąd podczas pobierania raportu:", str(e))
+        xls_filename = None
     return xls_filename
 
 
@@ -84,8 +86,9 @@ def download_all_solarman_reports(start_Day, end_day):
             logger.debug(f"download_solarman_report({device['id']},{device['sn']},{device['parent_sn']},{start_day},{end_day})")
             start_day = start_day.strftime("%Y-%m-%d")
             xls_file=download_solarman_report(device['id'],device['sn'],device['parent_sn'],start_day,end_day)
-            logger.info(f"Pobrano plik: {xls_file}")
-            xls_list.append(xls_file)
+            if not xls_file is None:
+                logger.info(f"Pobrano plik: {xls_file}")
+                xls_list.append(xls_file)
         else:
             logger.warning(f"Urządzenie {device['sn']} nie jest systemem Solarman, pomijam pobieranie raportu.")
     return xls_list

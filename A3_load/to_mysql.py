@@ -214,6 +214,9 @@ def safe_insert_dataframe_to_sql(engine, df, import_table_name):
         df_subset = df[common_columns]
         # 3a Raport z czystości danych przed wstawieniem
         #print("🔍 Wiersze z błędnymi datami w system_time :", df[pd.to_datetime(df["system_time"], errors="coerce").isna()].shape[0])
+        if not 'system_time' in df.columns:
+            logger.error(f"Brak danych w kolumnie system_time. Nie można załadować do bazy!")
+            return
         if df[pd.to_datetime(df['system_time'], errors='coerce').isna()].shape[0]>0:
             logger.debug(f"Wiersze z błędnymi datami w system_time : {df[pd.to_datetime(df['system_time'], errors='coerce').isna()].shape[0]}")
 
@@ -342,6 +345,9 @@ def list_all_file_paths(start_path, pattern):
     return [str(p) for p in start.rglob(pattern) if p.is_file()]
 def process_excel_file(file_path, import_table_name='IMPORT_DATA', debug_table_name=''):
     logger.debug(f"process_excel_file({file_path}, import_table_name='IMPORT_DATA', debug_table_name='')")
+    if not os.path.isfile(file_path):
+        logger.warning(f"BRAK PLIKU: {file_path}")
+        return
     df = pd.read_excel(file_path)
     file_columns = df.columns.tolist()
     norm_columns = [normalize_column_name(col) for col in file_columns]
@@ -390,7 +396,7 @@ def main(xls_files):
     for file in all_files:
         logger.info(f"Przetwarzanie pliku: {file}")
         process_excel_file(file, import_table_name='IMPORT_DATA', debug_table_name='')
-    logger.notice("process_excel_file completed for all files.")
+    logger.notice(f"process_excel_file completed for {len(all_files)} files.")
 if __name__  == "__main__":
     main()
 
