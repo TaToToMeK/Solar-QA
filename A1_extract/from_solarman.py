@@ -6,7 +6,7 @@ from sqlalchemy import text
 import calendar
 import requests
 import json
-import sys
+import os
 import brotli
 import logging
 logger = logging.getLogger(__name__)
@@ -34,8 +34,18 @@ def parse_headers_file(filename):
     return headers
 
 def download_solarman_report(device_id, device_sn, parent_sn, start_day, end_day):
-    headers = parse_headers_file(config.SOLARMAN_HEADERS_FILE)
-    with open(config.SOLARMAN_PAYLOAD_FILE, "r", encoding="utf-8") as f:
+    dev_system = DEVICES_LIST[device_sn]['system']
+    dev_admin = DEVICES_LIST[device_sn]['admin']
+    solarman_payload_file=f"{config.BROWSER_SESSIONS_DIR}/{dev_system}-{dev_admin}-payload.json"
+    if not os.path.isfile(solarman_payload_file):
+        logger.warning(f"brak pliku PAYLOAD: {solarman_payload_file}")
+        return
+    solarman_header_file = f"{config.BROWSER_SESSIONS_DIR}/{dev_system}-{dev_admin}-headers.secret"
+    if not os.path.isfile(solarman_header_file):
+        logger.warning(f"brak pliku HEADER: {solarman_header_file}")
+        return
+    headers = parse_headers_file(solarman_header_file)
+    with open(solarman_payload_file, "r", encoding="utf-8") as f:
         payload = json.load(f)
     payload["deviceId"] = device_id
     payload["deviceSn"] = device_sn

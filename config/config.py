@@ -20,11 +20,12 @@ DEVICES_LIST_FILE      = CONFIG_DIR / "devices_list.txt"
 DEVICES_SECRETS_FILE   = CONFIG_DIR / "devices_secrets.json"
 LAST_ANALYSIS_DATE_FILE= CONFIG_DIR / "last_analysis_date.txt"
 
+BROWSER_SESSIONS_DIR = CONFIG_DIR / "browsersessions"
 
 #SOLARMAN specific
 SOLARMAN_URL = "https://globalhome.solarmanpv.com/device-s/report/export"
-SOLARMAN_HEADERS_FILE = TMP_DIR / "headers.txt"
-SOLARMAN_PAYLOAD_FILE = TMP_DIR / "payload.json"
+#SOLARMAN_HEADERS_FILE = TMP_DIR / "headers.txt"  --obsolete
+#SOLARMAN_PAYLOAD_FILE = TMP_DIR / "payload.json" --obsolete
 
 # Załaduj zmienne środowiskowe z pliku .env (jeśli istnieje)
 load_dotenv(dotenv_path=ENV_FILE)
