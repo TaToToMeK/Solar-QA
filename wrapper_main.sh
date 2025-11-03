@@ -8,8 +8,14 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 echo $DIR
 cd $DIR
 source .venv/bin/activate
-python main.py --log-level NOTICE
+python main.py --log-level INFO
 PYTHONPATH=. python A5_analyze/analizy.py --log-level NOTICE
 echo "Closing main.py wrapper script..."
 date
+echo "----------------------------------------"
+echo "Starting postprocessing script..."
+if [[ -x ./postprocessing.sh ]]; then
+    ./postprocessing.sh
+fi
+echo "Closing postprocessing script..."
 echo "----------------------------------------"
