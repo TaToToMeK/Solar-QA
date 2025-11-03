@@ -1,5 +1,8 @@
-name	deviceId	deviceSn	parentSn	system	admin
-PV  Bielany 50kW	230709814	SS3ES150NAT230	2720846062	solarman	admin001
-PV  Kożuchów 20kW	230731624	SS1ES120P4U121	2768723817	solarman	admin001
-PV  Kożuchów 22kW	230731855	SS1ES122M5G764	1776414813	solarman	admin001
-PV  Kudelczyn 25kW	229763641	SS3ES125P38069	2754356247	solarman	admin001
+name	deviceId	deviceSn	parentSn	system	admin	is_pull
+Szkoła Rozbity Kamień 17kW	222557044	SS1ES117N46219	2107828999	solarman	adminBielany	pull
+Szkoła Bielany xxkW	220560164	SS1ES120N35026	2344957011	solarman	adminBielany	pull
+Szkoła Bielany 20kW	220802152	SC2ES215HCF563	0806098551	solarman	adminBielany	no-pull
+Bielany 50kW	230709814	SS3ES150NAT230	2720846062	solarman	adminPUK	no-pull
+Kożuchów 20kW	230731624	SS1ES120P4U121	2768723817	solarman	adminPUK	no-pull
+Kożuchów 22kW	230731855	SS1ES122M5G764	1776414813	solarman	adminPUK	no-pull
+Kudelczyn 25kW	229763641	SS3ES125P38069	2754356247	solarman	adminPUK	no-pull

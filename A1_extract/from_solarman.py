@@ -73,12 +73,15 @@ def download_all_solarman_reports(start_Day, end_day):
     xls_list=[]
     for device in DEVICES_LIST.values():
         logger.info(f"Device SN: {device['sn']}, Name: {device['name']}, ID: {device['id']}, Parent SN: {device['parent_sn']}, System: {device['system']}, Admin: {device['admin']}")
+        if device['is_pull'] != 'pull':
+            logger.notice(f"Pobieranie raportu dla urządzenia {device['sn']} jest WYŁĄCZONE (is_pull={device['is_pull']}), pomijam.")
+            continue
         if device['system'] == 'solarman':
             start_day = get_last_update_for_instalation(device['sn'])
             if start_day is None:
-                start_day = (datetime.now() - timedelta(days=200))
-            end_day = (start_day + timedelta(days=15)).strftime("%Y-%m-%d")
-            logger.debug(f"download_solarman_report({device['id']},{device['sn']},{device['parent_sn']},startDay,endDay)")
+                start_day = (datetime.now() - timedelta(days=190))
+            end_day = (start_day + timedelta(days=61)).strftime("%Y-%m-%d")
+            logger.debug(f"download_solarman_report({device['id']},{device['sn']},{device['parent_sn']},{start_day},{end_day})")
             start_day = start_day.strftime("%Y-%m-%d")
             xls_file=download_solarman_report(device['id'],device['sn'],device['parent_sn'],start_day,end_day)
             logger.info(f"Pobrano plik: {xls_file}")
@@ -100,8 +103,8 @@ def pull_all_solarman(year=2025):
 
 
 if __name__  == "__main__":
-    start_day='2025-08-31'
-    end_day='2025-09-01'
+    start_day='2025-10-29'
+    end_day='2025-10-30'
 
     print("Pobieranie raportu Solarman dla urządzenia SS3ES125P38069 ===========")
     print (f"download_solarman_report('229763641','SS3ES125P38069','2754356247', {start_day}, {end_day})")

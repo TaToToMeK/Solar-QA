@@ -44,23 +44,27 @@ PLOT_RESOLUTION_DPI    = 150
 def _load_devices():
     devices = {}
     with open(DEVICES_LIST_FILE, "r", encoding="utf-8") as file:
-        next(file)  # pomija nagłówek
+        devices_file_header_line = file.readline().strip()
+        devices_file_header = devices_file_header_line.split("\t")
+        devices_file_header_length= len(devices_file_header)
         for i, line in enumerate(file, start=1):
-            device_param = line.strip().split("\t")[:6]
-            if len(device_param) != 6:
-                logger.warning(f"Wiersz {i} ma niewłaściwą liczbę elementów: {device_param}")
+            device_param = line.strip().split("\t")[:devices_file_header_length]
+            if len(device_param) != devices_file_header_length:
+                logger.warning(f"W {DEVICES_LIST_FILE} w wierszu {i} oczekiwano {devices_file_header_length} parametrów) : {device_param}")
                 continue
 
-            deviceName, deviceId, deviceSn, parentSn, system, admin = device_param
+            deviceName, deviceId, deviceSn, parentSn, system, admin,is_pull = device_param
             devices[deviceSn] = {
                 "sn" : deviceSn,
                 "name": deviceName,
                 "id": deviceId,
                 "parent_sn": parentSn,
                 "system": system,
-                "admin": admin
+                "admin": admin,
+                "is_pull": is_pull
             }
     return devices
 
 # Wczytanie słownika przy imporcie modułu
 DEVICES_LIST = _load_devices()
+
