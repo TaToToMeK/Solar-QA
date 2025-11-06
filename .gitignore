@@ -6,6 +6,7 @@ config/devices_secrets.json
 config/last_analysis_date.txt
 devices_secrets*
 *.secret
+postprocessing.sh
 
 # Katalogi tymczasowe
 tmp/

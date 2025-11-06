@@ -55,7 +55,7 @@ def get_last_update_for_instalation(sn):
             result = connection.execute(query).fetchone()[0]
 
     except exc.SQLAlchemyError as e:
-        logger.error(f"Błąd podczas pobierania dat z tabeli {db_maintable}: {e}")
+        logger.error(f"Błąd dla sn={sn} podczas pobierania dat z tabeli {db_maintable}: {e}")
         result=None
     return result
 

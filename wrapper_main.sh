@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # to be used with cron job
 #00 */3 * * * /home/astek/PV-monitor/wrapper_main.sh >> /home/astek/PV-monitor/logs/cron.log 2>&1
+LOCKFILE="/tmp/PV-monitor-wrapper_main.sh.lock"
 echo "----------------------------------------"
+exec 200>"$LOCKFILE"
+flock -n 200 || { echo "Już działa inna instancja, kończę."; exit 1; }
 date
 echo "Starting main.py wrapper script..."
 DIR="$(cd "$(dirname "$0")" && pwd)"
